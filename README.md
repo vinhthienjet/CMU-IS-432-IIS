@@ -254,9 +254,9 @@ git push origin feature/authentication
 
 ## 👨‍💻 Nhóm phát triển
 
-**Nguyễn Vinh Thiện**
-**Nguyễn Ngọc Hiền**
-**Cao Lê Ngọc Triều**
+**Nguyễn Vinh Thiện** \n
+**Nguyễn Ngọc Hiền** \n
+**Cao Lê Ngọc Triều** \n
 **Nguyễn Văn Hoàng Hướng**
 
 Sinh viên lớp CMU-TPM5 ngành khoa học máy tính
