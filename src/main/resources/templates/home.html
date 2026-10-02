@@ -1,109 +1,71 @@
-<home class="html"></home>
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Online Book Reselling</title>
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
             font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            color: #333;
+            margin: 0;
+            background: #f5f5f5;
         }
 
         header {
-            background-color: #2c3e50;
+            background: #222;
             color: white;
-            padding: 20px 50px;
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .menu a {
-            color: white;
-            text-decoration: none;
-            margin-left: 25px;
-        }
-
-        .menu a:hover {
-            text-decoration: underline;
-        }
-
-        .hero {
+            padding: 20px;
             text-align: center;
-            padding: 100px 20px;
-            background-color: white;
         }
 
-        .hero h1 {
-            font-size: 42px;
-            margin-bottom: 20px;
-            color: #2c3e50;
+        .container {
+            width: 90%;
+            margin: 30px auto;
         }
 
-        .hero p {
-            font-size: 18px;
-            margin-bottom: 30px;
-            color: #666;
+        .book-list {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .book {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .book img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .book h3 {
+            margin-top: 15px;
+        }
+
+        .price {
+            color: #e53935;
+            font-size: 20px;
+            font-weight: bold;
         }
 
         .button {
             display: inline-block;
-            padding: 12px 25px;
-            background-color: #3498db;
+            margin-top: 10px;
+            padding: 10px 15px;
+            background: #222;
             color: white;
             text-decoration: none;
             border-radius: 5px;
         }
 
         .button:hover {
-            background-color: #2980b9;
-        }
-
-        .features {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            padding: 60px 30px;
-        }
-
-        .feature {
-            background-color: white;
-            width: 250px;
-            padding: 30px;
-            text-align: center;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .feature h3 {
-            margin-bottom: 15px;
-            color: #2c3e50;
-        }
-
-        footer {
-            text-align: center;
-            padding: 20px;
-            background-color: #2c3e50;
-            color: white;
+            background: #444;
         }
     </style>
 </head>
@@ -111,63 +73,53 @@
 <body>
 
 <header>
-    <nav>
-        <div class="logo">
-            📚 Online Book Reselling
-        </div>
-
-        <div class="menu">
-            <a href="/">Home</a>
-            <a href="#">Books</a>
-            <a href="#">Login</a>
-            <a href="#">Register</a>
-        </div>
-    </nav>
+    <h1>📚 Online Book Reselling</h1>
+    <p>Danh sách sách</p>
 </header>
 
-<section class="hero">
+<div class="container">
 
-    <h1>Welcome to Online Book Reselling</h1>
+    <h2>Tất cả sách</h2>
 
-    <p>
-        Buy books, sell books and discover your next favorite book.
-    </p>
+    <div class="book-list">
 
-    <a href="#" class="button">
-        Browse Books
-    </a>
+        <div class="book" th:each="book : ${books}">
 
-</section>
+            <img th:if="${book.image != null}"
+                 th:src="@{'/images/' + ${book.image}}"
+                 alt="Book Image">
 
-<section class="features">
+            <h3 th:text="${book.title}"></h3>
 
-    <div class="feature">
-        <h3>📚 Buy Books</h3>
-        <p>
-            Find and purchase books easily from our online bookstore.
-        </p>
+            <p>
+                Tác giả:
+                <span th:text="${book.author}"></span>
+            </p>
+
+            <p>
+                Thể loại:
+                <span th:text="${book.category.name}"></span>
+            </p>
+
+            <p class="price"
+               th:text="${book.price} + ' VNĐ'">
+            </p>
+
+            <p>
+                Số lượng:
+                <span th:text="${book.quantity}"></span>
+            </p>
+
+            <a class="button"
+               th:href="@{'/books/' + ${book.id}}">
+                Xem chi tiết
+            </a>
+
+        </div>
+
     </div>
 
-    <div class="feature">
-        <h3>💰 Sell Books</h3>
-        <p>
-            Add your own books and sell them to other users.
-        </p>
-    </div>
-
-    <div class="feature">
-        <h3>🛒 Shopping Cart</h3>
-        <p>
-            Add books to your cart and checkout easily.
-        </p>
-    </div>
-
-</section>
-
-<footer>
-    <p>© 2026 Online Book Reselling</p>
-</footer>
+</div>
 
 </body>
 </html>
-```
