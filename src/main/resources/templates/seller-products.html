@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Quản lý sản phẩm</title>
+
+
+    <style>
+
+        /* =========================
+           GLOBAL
+        ========================= */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+
+            font-family: Arial, sans-serif;
+
+            background: #f4f6f9;
+
+            color: #334155;
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+            background: linear-gradient(
+                    135deg,
+                    #1e293b,
+                    #334155
+            );
+
+            color: white;
+
+            padding: 22px 30px;
+
+            box-shadow:
+                    0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+
+        .header-content {
+            max-width: 1400px;
+
+            margin: auto;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+        }
+
+
+        .brand {
+            color: white;
+
+            text-decoration: none;
+        }
+
+
+        .brand h1 {
+            margin: 0;
+
+            font-size: 25px;
+        }
+
+
+        .brand p {
+            margin: 5px 0 0;
+
+            color: #cbd5e1;
+
+            font-size: 13px;
+        }
+
+
+        .seller-name {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 9px 14px;
+
+            background: rgba(255, 255, 255, 0.1);
+
+            border: 1px solid rgba(255, 255, 255, 0.15);
+
+            border-radius: 9px;
+
+            color: white;
+
+            font-size: 14px;
+
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           LAYOUT
+        ========================= */
+
+        .page-container {
+            width: 94%;
+
+            max-width: 1400px;
+
+            margin: 30px auto 50px;
+
+            display: grid;
+
+            grid-template-columns: 220px 1fr;
+
+            gap: 25px;
+        }
+
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+            background: white;
+
+            padding: 20px;
+
+            border-radius: 15px;
+
+            height: fit-content;
+
+            box-shadow:
+                    0 5px 20px rgba(0, 0, 0, 0.07);
+        }
+
+
+        .sidebar-title {
+            margin: 0 0 18px;
+
+            padding-bottom: 15px;
+
+            border-bottom: 1px solid #e2e8f0;
+
+            color: #1e293b;
+
+            font-size: 17px;
+        }
+
+
+        .menu-item {
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            width: 100%;
+
+            margin-bottom: 9px;
+
+            padding: 11px 12px;
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 9px;
+
+            background: white;
+
+            color: #475569;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            transition: all 0.25s ease;
+        }
+
+
+        .menu-item:hover {
+            background: #eff6ff;
+
+            color: #2563eb;
+
+            border-color: #bfdbfe;
+
+            transform: translateX(2px);
+        }
+
+
+        .menu-item.active {
+            background: #2563eb;
+
+            color: white;
+
+            border-color: #2563eb;
+        }
+
+
+        /* =========================
+           MAIN CONTENT
+        ========================= */
+
+        .main-content {
+            min-width: 0;
+        }
+
+
+        .content-card {
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                    0 5px 20px rgba(0, 0, 0, 0.07);
+        }
+
+
+        /* =========================
+           PAGE TITLE
+        ========================= */
+
+        .page-title-row {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-bottom: 22px;
+        }
+
+
+        .page-title {
+            margin: 0;
+
+            color: #1e293b;
+
+            font-size: 26px;
+        }
+
+
+        .page-subtitle {
+            margin: 6px 0 0;
+
+            color: #64748b;
+
+            font-size: 13px;
+        }
+
+
+        /* =========================
+           ADD BUTTON
+        ========================= */
+
+        .add-btn {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            padding: 11px 17px;
+
+            background: #2563eb;
+
+            color: white;
+
+            border-radius: 9px;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            transition: all 0.25s ease;
+
+            white-space: nowrap;
+        }
+
+
+        .add-btn:hover {
+            background: #1d4ed8;
+
+            color: white;
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                    0 6px 14px rgba(37, 99, 235, 0.25);
+        }
+
+
+        /* =========================
+           ALERT
+        ========================= */
+
+        .alert {
+            margin-bottom: 18px;
+
+            padding: 12px 15px;
+
+            border-radius: 9px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+        }
+
+
+        .alert-success {
+            background: #ecfdf5;
+
+            color: #047857;
+
+            border: 1px solid #a7f3d0;
+        }
+
+
+        .alert-danger {
+            background: #fef2f2;
+
+            color: #dc2626;
+
+            border: 1px solid #fecaca;
+        }
+
+
+        /* =========================
+           FILTER
+        ========================= */
+
+        .filter-box {
+            margin-bottom: 22px;
+
+            padding: 18px;
+
+            background: #f8fafc;
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 12px;
+        }
+
+
+        .filter-title {
+            margin: 0 0 15px;
+
+            color: #1e293b;
+
+            font-size: 15px;
+
+            font-weight: bold;
+        }
+
+
+        .filter-form {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr auto;
+
+            align-items: end;
+
+            gap: 15px;
+        }
+
+
+        .filter-group label {
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #475569;
+
+            font-size: 13px;
+
+            font-weight: bold;
+        }
+
+
+        .form-control {
+            width: 100%;
+
+            padding: 10px 12px;
+
+            border: 1px solid #cbd5e1;
+
+            border-radius: 8px;
+
+            background: white;
+
+            color: #1e293b;
+
+            font-size: 14px;
+
+            outline: none;
+
+            transition: all 0.25s ease;
+        }
+
+
+        .form-control:focus {
+            border-color: #2563eb;
+
+            box-shadow:
+                    0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+
+        .filter-btn {
+            padding: 10px 18px;
+
+            background: #475569;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: all 0.25s ease;
+        }
+
+
+        .filter-btn:hover {
+            background: #334155;
+
+            transform: translateY(-1px);
+        }
+
+
+        /* =========================
+           TABLE
+        ========================= */
+
+        .table-wrapper {
+            width: 100%;
+
+            overflow-x: auto;
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 12px;
+        }
+
+
+        table {
+            width: 100%;
+
+            min-width: 850px;
+
+            border-collapse: collapse;
+
+            background: white;
+        }
+
+
+        thead {
+            background: #1e293b;
+
+            color: white;
+        }
+
+
+        th {
+            padding: 14px 12px;
+
+            text-align: left;
+
+            font-size: 13px;
+
+            white-space: nowrap;
+        }
+
+
+        td {
+            padding: 14px 12px;
+
+            border-top: 1px solid #e2e8f0;
+
+            color: #475569;
+
+            font-size: 14px;
+
+            vertical-align: middle;
+        }
+
+
+        tbody tr {
+            transition: background 0.2s ease;
+        }
+
+
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+
+
+        .book-id {
+            color: #64748b;
+
+            font-weight: bold;
+        }
+
+
+        .book-title {
+            color: #1e293b;
+
+            font-weight: bold;
+        }
+
+
+        .price {
+            color: #dc2626;
+
+            font-weight: bold;
+
+            white-space: nowrap;
+        }
+
+
+        /* =========================
+           STATUS
+        ========================= */
+
+        .status {
+            display: inline-block;
+
+            padding: 6px 10px;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+
+            font-weight: bold;
+
+            white-space: nowrap;
+        }
+
+
+        .status-available {
+            background: #dcfce7;
+
+            color: #15803d;
+        }
+
+
+        .status-sold {
+            background: #f1f5f9;
+
+            color: #64748b;
+        }
+
+
+        /* =========================
+           ACTION BUTTONS
+        ========================= */
+
+        .action-group {
+            display: flex;
+
+            gap: 7px;
+        }
+
+
+        .action-btn {
+            padding: 7px 11px;
+
+            border: none;
+
+            border-radius: 7px;
+
+            color: white;
+
+            font-size: 12px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: all 0.2s ease;
+        }
+
+
+        .edit-btn {
+            background: #2563eb;
+        }
+
+
+        .edit-btn:hover {
+            background: #1d4ed8;
+
+            transform: translateY(-1px);
+        }
+
+
+        .delete-btn {
+            background: #dc2626;
+        }
+
+
+        .delete-btn:hover {
+            background: #b91c1c;
+
+            transform: translateY(-1px);
+        }
+
+
+        .disabled-text {
+            color: #94a3b8;
+
+            font-size: 12px;
+
+            font-style: italic;
+        }
+
+
+        /* =========================
+           MODAL
+        ========================= */
+
+        .modal-overlay {
+            position: fixed;
+
+            inset: 0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+
+            background: rgba(15, 23, 42, 0.6);
+
+            backdrop-filter: blur(3px);
+
+            z-index: 1000;
+        }
+
+
+        .modal-box {
+            width: 100%;
+
+            max-width: 400px;
+
+            padding: 28px;
+
+            background: white;
+
+            border-radius: 16px;
+
+            box-shadow:
+                    0 20px 50px rgba(0, 0, 0, 0.25);
+
+            text-align: center;
+
+            animation: modalShow 0.2s ease;
+        }
+
+
+        @keyframes modalShow {
+
+            from {
+                opacity: 0;
+
+                transform: translateY(-15px) scale(0.97);
+            }
+
+            to {
+                opacity: 1;
+
+                transform: translateY(0) scale(1);
+            }
+
+        }
+
+
+        .modal-icon {
+            width: 55px;
+
+            height: 55px;
+
+            margin: 0 auto 15px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: #eff6ff;
+
+            border-radius: 50%;
+
+            font-size: 26px;
+        }
+
+
+        .modal-title {
+            margin: 0;
+
+            color: #1e293b;
+
+            font-size: 21px;
+        }
+
+
+        .modal-description {
+            margin: 10px 0 20px;
+
+            color: #64748b;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           PASSWORD
+        ========================= */
+
+        .password-wrapper {
+            position: relative;
+
+            margin-bottom: 15px;
+        }
+
+
+        .password-input {
+            width: 100%;
+
+            padding: 12px 45px 12px 13px;
+
+            border: 1px solid #cbd5e1;
+
+            border-radius: 9px;
+
+            background: white;
+
+            color: #1e293b;
+
+            font-size: 14px;
+
+            outline: none;
+        }
+
+
+        .password-input:focus {
+            border-color: #2563eb;
+
+            box-shadow:
+                    0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+
+        .toggle-password {
+            position: absolute;
+
+            top: 50%;
+
+            right: 10px;
+
+            transform: translateY(-50%);
+
+            width: 32px;
+
+            height: 32px;
+
+            border: none;
+
+            background: transparent;
+
+            color: #64748b;
+
+            cursor: pointer;
+
+            border-radius: 6px;
+
+            font-size: 17px;
+        }
+
+
+        .toggle-password:hover {
+            background: #f1f5f9;
+
+            color: #2563eb;
+        }
+
+
+        /* =========================
+           MODAL BUTTONS
+        ========================= */
+
+        .modal-btn {
+            width: 100%;
+
+            padding: 11px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: all 0.25s ease;
+        }
+
+
+        .confirm-btn {
+            margin-bottom: 9px;
+
+            background: #2563eb;
+
+            color: white;
+        }
+
+
+        .confirm-btn:hover {
+            background: #1d4ed8;
+        }
+
+
+        .cancel-btn {
+            background: #f1f5f9;
+
+            color: #475569;
+
+            border: 1px solid #cbd5e1;
+        }
+
+
+        .cancel-btn:hover {
+            background: #e2e8f0;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 900px) {
+
+            .page-container {
+                grid-template-columns: 1fr;
+            }
+
+
+            .sidebar {
+                width: 100%;
+            }
+
+
+            .filter-form {
+                grid-template-columns: 1fr;
+            }
+
+
+            .filter-btn {
+                width: 100%;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            header {
+                padding: 20px 15px;
+            }
+
+
+            .header-content {
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+
+            .page-container {
+                width: 94%;
+
+                margin-top: 20px;
+            }
+
+
+            .content-card {
+                padding: 18px;
+            }
+
+
+            .page-title-row {
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .add-btn {
+                justify-content: center;
+            }
+
+
+            .sidebar {
+                padding: 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header>
+
+    <div class="header-content">
+
+        <a
+                href="/"
+                class="brand">
+
+            <h1>
+                📚 Online Book Reselling
+            </h1>
+
+            <p>
+                Quản lý sản phẩm của người bán
+            </p>
+
+        </a>
+
+
+        <div class="seller-name">
+
+            👤
+
+            <span
+                    th:text="${session.loggedInUser != null ? session.loggedInUser.fullName : 'Tên người bán'}">
+
+                Tên người bán
+
+            </span>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =========================
+     PAGE LAYOUT
+========================= -->
+
+<div class="page-container">
+
+
+    <!-- =========================
+         SIDEBAR
+    ========================= -->
+
+    <aside class="sidebar">
+
+        <h3 class="sidebar-title">
+            ⚙️ Menu quản lý
+        </h3>
+
+
+        <a
+                class="menu-item active"
+                href="/seller/products">
+
+            📦
+
+            <span>
+                Sản phẩm của bạn
+            </span>
+
+        </a>
+
+        <a
+                class="menu-item"
+                href="/seller">
+
+            💳
+
+            <span>
+                Giao dịch của bạn
+            </span>
+
+        </a>
+
+
+        <a
+                class="menu-item"
+                href="/seller/revenue">
+
+            💰
+
+            <span>
+                Quản lý doanh thu
+            </span>
+
+        </a>
+
+
+    </aside>
+
+
+    <!-- =========================
+         MAIN
+    ========================= -->
+
+    <main class="main-content">
+
+        <div class="content-card">
+
+
+            <!-- =========================
+                 TITLE
+            ========================= -->
+
+            <div class="page-title-row">
+
+                <div>
+
+                    <h2 class="page-title">
+                        📦 Danh sách sản phẩm
+                    </h2>
+
+                    <p class="page-subtitle">
+                        Quản lý những cuốn sách bạn đang bán
+                    </p>
+
+                </div>
+
+
+                <a
+                        href="/seller/book/add"
+                        class="add-btn">
+
+                    ＋ Thêm sách mới
+
+                </a>
+
+            </div>
+
+
+            <!-- =========================
+                 ALERT
+            ========================= -->
+
+            <div
+                    th:if="${success}"
+                    class="alert alert-success"
+                    th:text="${success}">
+
+                Thao tác thành công
+
+            </div>
+
+
+            <div
+                    th:if="${error}"
+                    class="alert alert-danger"
+                    th:text="${error}">
+
+                Có lỗi xảy ra
+
+            </div>
+
+
+            <!-- =========================
+                 FILTER
+            ========================= -->
+
+            <div class="filter-box">
+
+                <div class="filter-title">
+                    🔎 Lọc & sắp xếp sản phẩm
+                </div>
+
+
+                <form
+                        th:action="@{/seller/products}"
+                        method="get"
+                        class="filter-form">
+
+
+                    <!-- STATUS -->
+
+                    <div class="filter-group">
+
+                        <label>
+                            Trạng thái
+                        </label>
+
+                        <select
+                                name="status"
+                                class="form-control">
+
+                            <option
+                                    value="ALL"
+                                    th:selected="${currentStatus == 'ALL'}">
+
+                                Tất cả
+
+                            </option>
+
+
+                            <option
+                                    value="AVAILABLE"
+                                    th:selected="${currentStatus == 'AVAILABLE' or currentStatus == 'Đang bán'}">
+
+                                Đang bán (AVAILABLE)
+
+                            </option>
+
+
+                            <option
+                                    value="SOLD"
+                                    th:selected="${currentStatus == 'SOLD' or currentStatus == 'Đã bán'}">
+
+                                Đã bán (SOLD)
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- SORT -->
+
+                    <div class="filter-group">
+
+                        <label>
+                            Sắp xếp theo
+                        </label>
+
+                        <select
+                                name="sort"
+                                class="form-control">
+
+                            <option
+                                    value="time_asc"
+                                    th:selected="${currentSort == 'time_asc'}">
+
+                                Thời gian: Cũ đến mới
+
+                            </option>
+
+
+                            <option
+                                    value="price_asc"
+                                    th:selected="${currentSort == 'price_asc'}">
+
+                                Giá: Thấp đến cao
+
+                            </option>
+
+
+                            <option
+                                    value="price_desc"
+                                    th:selected="${currentSort == 'price_desc'}">
+
+                                Giá: Cao đến thấp
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- SUBMIT -->
+
+                    <button
+                            type="submit"
+                            class="filter-btn">
+
+                        🔎 Lọc & Sắp xếp
+
+                    </button>
+
+
+                </form>
+
+            </div>
+
+
+            <!-- =========================
+                 TABLE
+            ========================= -->
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>Tên sách</th>
+
+                        <th>Thể loại</th>
+
+                        <th>Giá (VNĐ)</th>
+
+                        <th>Trạng thái</th>
+
+                        <th>Thao tác</th>
+
+                    </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                    <tr th:each="book : ${books}">
+
+
+                        <!-- ID -->
+
+                        <td>
+
+                            <span
+                                    class="book-id"
+                                    th:text="${book.id}">
+
+                                1
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- TITLE -->
+
+                        <td>
+
+                            <span
+                                    class="book-title"
+                                    th:text="${book.title}">
+
+                                Tên sách
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- CATEGORY -->
+
+                        <td
+                                th:text="${book.category != null ? book.category.name : 'Không có'}">
+
+                            Thể loại
+
+                        </td>
+
+
+                        <!-- PRICE -->
+
+                        <td>
+
+                            <span
+                                    class="price"
+                                    th:text="${book.price}">
+
+                                100000
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- STATUS -->
+
+                        <td>
+
+                            <span
+                                    class="status"
+
+                                    th:classappend="${book.status == 'Đang bán' or book.status == 'AVAILABLE'} ? 'status-available' : 'status-sold'"
+
+                                    th:text="${book.status}">
+
+                                Đang bán
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- ACTION -->
+
+                        <td>
+
+
+                            <!-- AVAILABLE -->
+
+                            <div
+                                    th:if="${book.status == 'Đang bán' or book.status == 'AVAILABLE'}"
+                                    class="action-group">
+
+
+                                <button
+                                        type="button"
+                                        class="action-btn edit-btn"
+
+                                        th:onclick="openActionModal('edit', [[${book.id}]])">
+
+                                    ✏️ Sửa
+
+                                </button>
+
+
+                                <button
+                                        type="button"
+                                        class="action-btn delete-btn"
+
+                                        th:onclick="openActionModal('delete', [[${book.id}]])">
+
+                                    🗑️ Xóa
+
+                                </button>
+
+
+                            </div>
+
+
+                            <!-- SOLD -->
+
+                            <div
+                                    th:if="${book.status != 'Đang bán' and book.status != 'AVAILABLE'}">
+
+                                <span class="disabled-text">
+
+                                    🔒 Không thể thao tác
+
+                                </span>
+
+                            </div>
+
+
+                        </td>
+
+
+                    </tr>
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- ==================================================
+     PASSWORD MODAL
+================================================== -->
+
+<div
+        id="actionModal"
+        class="modal-overlay"
+
+        th:style="${lastAction != null ? 'display: flex;' : 'display: none;'}">
+
+
+    <div class="modal-box">
+
+
+        <div class="modal-icon">
+            🔐
+        </div>
+
+
+        <h4 class="modal-title">
+            Xác thực thao tác
+        </h4>
+
+
+        <p class="modal-description">
+            Vui lòng nhập mật khẩu của bạn để tiếp tục.
+        </p>
+
+
+        <form
+                th:action="@{/seller/verify-action}"
+                method="post">
+
+
+            <!-- ACTION -->
+
+            <input
+                    type="hidden"
+                    id="modalAction"
+                    name="action"
+                    th:value="${lastAction}" />
+
+
+            <!-- BOOK ID -->
+
+            <input
+                    type="hidden"
+                    id="modalBookId"
+                    name="bookId"
+                    th:value="${lastBookId}" />
+
+
+            <!-- PASSWORD -->
+
+            <div class="password-wrapper">
+
+                <input
+                        id="actionPassword"
+                        type="password"
+                        name="password"
+                        placeholder="Nhập mật khẩu..."
+                        required
+                        class="password-input">
+
+
+                <button
+                        type="button"
+                        class="toggle-password"
+                        onclick="togglePassword()"
+                        id="togglePasswordButton"
+                        aria-label="Hiện mật khẩu">
+
+                    👁
+
+                </button>
+
+            </div>
+
+
+            <!-- CONFIRM -->
+
+            <button
+                    type="submit"
+                    class="modal-btn confirm-btn">
+
+                ✓ Xác nhận
+
+            </button>
+
+
+            <!-- CANCEL -->
+
+            <button
+                    type="button"
+                    class="modal-btn cancel-btn"
+                    onclick="closeActionModal()">
+
+                Hủy bỏ
+
+            </button>
+
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     JAVASCRIPT
+========================= -->
+
+<script>
+
+    function openActionModal(action, bookId) {
+
+        document.getElementById('modalAction').value = action;
+
+        document.getElementById('modalBookId').value = bookId;
+
+        document.getElementById('actionModal').style.display = 'flex';
+
+    }
+
+
+    function closeActionModal() {
+
+        document.getElementById('actionModal').style.display = 'none';
+
+    }
+
+
+    function togglePassword() {
+
+        const passwordInput =
+            document.getElementById('actionPassword');
+
+        const toggleButton =
+            document.getElementById('togglePasswordButton');
+
+
+        if (passwordInput.type === 'password') {
+
+            passwordInput.type = 'text';
+
+            toggleButton.textContent = '🙈';
+
+            toggleButton.setAttribute(
+                'aria-label',
+                'Ẩn mật khẩu'
+            );
+
+        } else {
+
+            passwordInput.type = 'password';
+
+            toggleButton.textContent = '👁';
+
+            toggleButton.setAttribute(
+                'aria-label',
+                'Hiện mật khẩu'
+            );
+
+        }
+
+    }
+
+</script>
+
+
+</body>
+
+</html>

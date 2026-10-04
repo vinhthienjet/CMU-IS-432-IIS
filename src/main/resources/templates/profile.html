@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Thông tin cá nhân</title>
+
+
+    <style>
+
+        /* =========================
+           GLOBAL
+        ========================= */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+
+            font-family: Arial, sans-serif;
+
+            background: #f4f6f9;
+
+            color: #334155;
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+            background: linear-gradient(
+                    135deg,
+                    #1e293b,
+                    #334155
+            );
+
+            color: white;
+
+            padding: 28px 20px;
+
+            text-align: center;
+
+            box-shadow:
+                    0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        header h1 {
+            margin: 0;
+
+            font-size: 30px;
+        }
+
+        header p {
+            margin: 8px 0 0;
+
+            color: #cbd5e1;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           MAIN CONTAINER
+        ========================= */
+
+        .container {
+            width: 90%;
+
+            max-width: 850px;
+
+            margin: 30px auto 50px;
+        }
+
+
+        /* =========================
+           BACK BUTTON
+        ========================= */
+
+        .back-btn {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            margin-bottom: 18px;
+
+            padding: 9px 15px;
+
+            background: white;
+
+            color: #475569;
+
+            text-decoration: none;
+
+            border: 1px solid #cbd5e1;
+
+            border-radius: 9px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            transition: all 0.25s ease;
+        }
+
+        .back-btn:hover {
+            background: #eff6ff;
+
+            color: #2563eb;
+
+            border-color: #93c5fd;
+
+            transform: translateX(-2px);
+        }
+
+
+        /* =========================
+           PROFILE CARD
+        ========================= */
+
+        .profile-card {
+            background: white;
+
+            border-radius: 16px;
+
+            padding: 30px;
+
+            box-shadow:
+                    0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+
+        /* =========================
+           TITLE
+        ========================= */
+
+        .profile-title {
+            margin: 0 0 25px;
+
+            padding-bottom: 18px;
+
+            border-bottom: 1px solid #e2e8f0;
+
+            color: #1e293b;
+
+            font-size: 26px;
+        }
+
+
+        /* =========================
+           SUCCESS
+        ========================= */
+
+        .success-message {
+            margin-bottom: 20px;
+
+            padding: 12px 15px;
+
+            background: #ecfdf5;
+
+            color: #047857;
+
+            border: 1px solid #a7f3d0;
+
+            border-radius: 9px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           AVATAR
+        ========================= */
+
+        .avatar-section {
+            text-align: center;
+
+            margin-bottom: 30px;
+        }
+
+        .avatar {
+            width: 130px;
+
+            height: 130px;
+
+            object-fit: cover;
+
+            border-radius: 50%;
+
+            border: 5px solid #e2e8f0;
+
+            box-shadow:
+                    0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+
+        /* =========================
+           INFORMATION
+        ========================= */
+
+        .info-list {
+            border: 1px solid #e2e8f0;
+
+            border-radius: 12px;
+
+            overflow: hidden;
+        }
+
+
+        .info-row {
+            display: flex;
+
+            align-items: center;
+
+            min-height: 58px;
+
+            padding: 12px 18px;
+
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+
+        .info-row:hover {
+            background: #f8fafc;
+        }
+
+
+        .info-label {
+            width: 180px;
+
+            flex-shrink: 0;
+
+            color: #64748b;
+
+            font-size: 14px;
+
+            font-weight: bold;
+        }
+
+
+        .info-value {
+            color: #1e293b;
+
+            font-size: 15px;
+
+            word-break: break-word;
+        }
+
+
+        /* =========================
+           EDIT SECTION
+        ========================= */
+
+        .edit-section {
+            margin-top: 25px;
+
+            padding-top: 25px;
+
+            border-top: 1px solid #e2e8f0;
+
+            text-align: right;
+        }
+
+
+        .edit-btn {
+            padding: 11px 20px;
+
+            background: #2563eb;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 9px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: all 0.25s ease;
+        }
+
+
+        .edit-btn:hover {
+            background: #1d4ed8;
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                    0 6px 14px rgba(37, 99, 235, 0.25);
+        }
+
+
+        /* =========================
+           MODAL OVERLAY
+        ========================= */
+
+        .modal-overlay {
+            position: fixed;
+
+            inset: 0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+
+            background: rgba(15, 23, 42, 0.6);
+
+            backdrop-filter: blur(3px);
+
+            z-index: 1000;
+        }
+
+
+        /* =========================
+           MODAL
+        ========================= */
+
+        .modal-box {
+            width: 100%;
+
+            max-width: 400px;
+
+            padding: 28px;
+
+            background: white;
+
+            border-radius: 16px;
+
+            box-shadow:
+                    0 20px 50px rgba(0, 0, 0, 0.25);
+
+            text-align: center;
+
+            animation: modalShow 0.2s ease;
+        }
+
+
+        @keyframes modalShow {
+
+            from {
+                opacity: 0;
+
+                transform: translateY(-15px) scale(0.97);
+            }
+
+            to {
+                opacity: 1;
+
+                transform: translateY(0) scale(1);
+            }
+
+        }
+
+
+        .modal-icon {
+            width: 55px;
+
+            height: 55px;
+
+            margin: 0 auto 15px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: #eff6ff;
+
+            border-radius: 50%;
+
+            font-size: 26px;
+        }
+
+
+        .modal-title {
+            margin: 0;
+
+            color: #1e293b;
+
+            font-size: 21px;
+        }
+
+
+        .modal-description {
+            margin: 10px 0 20px;
+
+            color: #64748b;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           ERROR
+        ========================= */
+
+        .error-message {
+            margin-bottom: 15px;
+
+            padding: 10px;
+
+            background: #fef2f2;
+
+            color: #dc2626;
+
+            border: 1px solid #fecaca;
+
+            border-radius: 8px;
+
+            font-size: 13px;
+
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           PASSWORD
+        ========================= */
+
+        .password-wrapper {
+            position: relative;
+
+            margin-bottom: 20px;
+        }
+
+
+        .password-input {
+            width: 100%;
+
+            padding: 12px 45px 12px 13px;
+
+            border: 1px solid #cbd5e1;
+
+            border-radius: 9px;
+
+            background: white;
+
+            color: #1e293b;
+
+            font-size: 14px;
+
+            outline: none;
+
+            transition: all 0.25s ease;
+        }
+
+
+        .password-input:focus {
+            border-color: #2563eb;
+
+            box-shadow:
+                    0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+
+        .toggle-password {
+            position: absolute;
+
+            top: 50%;
+
+            right: 10px;
+
+            transform: translateY(-50%);
+
+            width: 32px;
+
+            height: 32px;
+
+            border: none;
+
+            background: transparent;
+
+            color: #64748b;
+
+            cursor: pointer;
+
+            border-radius: 6px;
+
+            font-size: 17px;
+        }
+
+
+        .toggle-password:hover {
+            background: #f1f5f9;
+
+            color: #2563eb;
+        }
+
+
+        /* =========================
+           MODAL BUTTONS
+        ========================= */
+
+        .modal-actions {
+            display: flex;
+
+            gap: 10px;
+
+            justify-content: center;
+        }
+
+
+        .modal-btn {
+            flex: 1;
+
+            padding: 10px 15px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: all 0.25s ease;
+        }
+
+
+        .continue-btn {
+            background: #2563eb;
+
+            color: white;
+        }
+
+
+        .continue-btn:hover {
+            background: #1d4ed8;
+        }
+
+
+        .cancel-btn {
+            background: #f1f5f9;
+
+            color: #475569;
+
+            border: 1px solid #cbd5e1;
+        }
+
+
+        .cancel-btn:hover {
+            background: #e2e8f0;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 600px) {
+
+            .container {
+                width: 94%;
+            }
+
+
+            .profile-card {
+                padding: 20px;
+            }
+
+
+            .info-row {
+                display: block;
+
+                padding: 14px 15px;
+            }
+
+
+            .info-label {
+                display: block;
+
+                width: auto;
+
+                margin-bottom: 5px;
+            }
+
+
+            .edit-section {
+                text-align: center;
+            }
+
+
+            .edit-btn {
+                width: 100%;
+            }
+
+
+            .modal-box {
+                padding: 22px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header>
+
+    <h1>
+        📚 Online Book Reselling
+    </h1>
+
+    <p>
+        Quản lý thông tin tài khoản
+    </p>
+
+</header>
+
+
+<div class="container">
+
+
+    <!-- =========================
+         BACK
+    ========================= -->
+
+    <a
+            href="/"
+            class="back-btn">
+
+        ← Quay lại trang chủ
+
+    </a>
+
+
+    <!-- =========================
+         PROFILE
+    ========================= -->
+
+    <div class="profile-card">
+
+
+        <h2 class="profile-title">
+            👤 Hồ sơ cá nhân
+        </h2>
+
+
+        <!-- SUCCESS -->
+
+        <div
+                th:if="${success}"
+                class="success-message"
+                th:text="${success}">
+
+            Cập nhật thành công
+
+        </div>
+
+
+        <!-- =========================
+             AVATAR
+        ========================= -->
+
+        <div class="avatar-section">
+
+            <img
+                    class="avatar"
+
+                    th:src="${user.avatar != null and user.avatar != '' ? user.avatar : 'https://cdn-icons-png.flaticon.com/512/149/149071.png'}"
+
+                    alt="Avatar">
+
+        </div>
+
+
+        <!-- =========================
+             INFORMATION
+        ========================= -->
+
+        <div class="info-list">
+
+
+            <div class="info-row">
+
+                <span class="info-label">
+                    👤 Tên đăng nhập
+                </span>
+
+                <span
+                        class="info-value"
+                        th:text="${user.username}">
+
+                </span>
+
+            </div>
+
+
+            <div class="info-row">
+
+                <span class="info-label">
+                    📝 Họ và tên
+                </span>
+
+                <span
+                        class="info-value"
+                        th:text="${user.fullName}">
+
+                </span>
+
+            </div>
+
+
+            <div class="info-row">
+
+                <span class="info-label">
+                    📧 Email
+                </span>
+
+                <span
+                        class="info-value"
+                        th:text="${user.email}">
+
+                </span>
+
+            </div>
+
+
+            <div class="info-row">
+
+                <span class="info-label">
+                    📱 Số điện thoại
+                </span>
+
+                <span
+                        class="info-value"
+                        th:text="${user.phone}">
+
+                </span>
+
+            </div>
+
+
+            <div class="info-row">
+
+                <span class="info-label">
+                    📍 Địa chỉ
+                </span>
+
+                <span
+                        class="info-value"
+                        th:text="${user.address}">
+
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =========================
+             EDIT
+        ========================= -->
+
+        <div class="edit-section">
+
+            <button
+                    type="button"
+                    class="edit-btn"
+                    onclick="openModal()">
+
+                ✏️ Chỉnh sửa thông tin
+
+            </button>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<!-- ==================================================
+     PASSWORD MODAL
+================================================== -->
+
+<div
+        id="passwordModal"
+        class="modal-overlay"
+
+        th:style="${error != null ? 'display: flex;' : 'display: none;'}">
+
+
+    <div class="modal-box">
+
+
+        <div class="modal-icon">
+            🔐
+        </div>
+
+
+        <h4 class="modal-title">
+            Xác thực tài khoản
+        </h4>
+
+
+        <p class="modal-description">
+            Vui lòng nhập mật khẩu để tiếp tục chỉnh sửa thông tin cá nhân.
+        </p>
+
+
+        <!-- ERROR -->
+
+        <div
+                th:if="${error}"
+                class="error-message"
+                th:text="${error}">
+
+            Mật khẩu không chính xác
+
+        </div>
+
+
+        <!-- FORM -->
+
+        <form
+                th:action="@{/profile/verify}"
+                method="post">
+
+
+            <!-- PASSWORD -->
+
+            <div class="password-wrapper">
+
+                <input
+                        id="profilePassword"
+                        type="password"
+                        name="password"
+                        class="password-input"
+                        placeholder="Nhập mật khẩu của bạn..."
+                        required>
+
+
+                <button
+                        type="button"
+                        class="toggle-password"
+                        onclick="togglePassword()"
+                        id="togglePasswordButton"
+                        aria-label="Hiện mật khẩu">
+
+                    👁
+
+                </button>
+
+            </div>
+
+
+            <!-- ACTIONS -->
+
+            <div class="modal-actions">
+
+
+                <button
+                        type="submit"
+                        class="modal-btn continue-btn">
+
+                    Tiếp tục
+
+                </button>
+
+
+                <button
+                        type="button"
+                        class="modal-btn cancel-btn"
+                        onclick="closeModal()">
+
+                    Hủy
+
+                </button>
+
+
+            </div>
+
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     JAVASCRIPT
+========================= -->
+
+<script>
+
+    function openModal() {
+
+        document.getElementById("passwordModal").style.display = "flex";
+
+    }
+
+
+    function closeModal() {
+
+        document.getElementById("passwordModal").style.display = "none";
+
+    }
+
+
+    function togglePassword() {
+
+        const passwordInput =
+            document.getElementById("profilePassword");
+
+        const toggleButton =
+            document.getElementById("togglePasswordButton");
+
+
+        if (passwordInput.type === "password") {
+
+            passwordInput.type = "text";
+
+            toggleButton.textContent = "🙈";
+
+            toggleButton.setAttribute(
+                "aria-label",
+                "Ẩn mật khẩu"
+            );
+
+        } else {
+
+            passwordInput.type = "password";
+
+            toggleButton.textContent = "👁";
+
+            toggleButton.setAttribute(
+                "aria-label",
+                "Hiện mật khẩu"
+            );
+
+        }
+
+    }
+
+</script>
+
+
+</body>
+
+</html>

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Đăng nhập - Online Book Reselling</title>
+    <title>Đăng ký - Online Book Reselling</title>
 
     <style>
 
@@ -20,6 +20,7 @@
             color: #333;
 
             min-height: 100vh;
+
             display: flex;
             flex-direction: column;
         }
@@ -31,7 +32,9 @@
         header {
             background: linear-gradient(135deg, #1e293b, #334155);
             color: white;
+
             padding: 30px 20px;
+
             text-align: center;
 
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
@@ -39,45 +42,62 @@
 
         header h1 {
             margin: 0;
+
             font-size: 30px;
+
             letter-spacing: 0.5px;
         }
 
         header p {
             margin: 8px 0 0;
+
             color: #cbd5e1;
+
             font-size: 14px;
         }
 
+
         /* =========================
-           LOGIN AREA
+           REGISTER AREA
         ========================= */
 
-        .login-page {
+        .register-page {
             flex: 1;
 
             display: flex;
+
             justify-content: center;
+
             align-items: center;
 
             padding: 40px 20px;
         }
 
-        .login-container {
+
+        /* =========================
+           REGISTER CARD
+        ========================= */
+
+        .register-container {
             width: 100%;
-            max-width: 430px;
+
+            max-width: 500px;
 
             background: white;
+
             padding: 35px;
 
             border-radius: 15px;
 
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            box-shadow:
+                    0 8px 25px rgba(0, 0, 0, 0.08);
 
             animation: fadeIn 0.4s ease;
         }
 
+
         @keyframes fadeIn {
+
             from {
                 opacity: 0;
                 transform: translateY(10px);
@@ -87,82 +107,91 @@
                 opacity: 1;
                 transform: translateY(0);
             }
+
         }
+
 
         /* =========================
            TITLE
         ========================= */
 
-        .login-title {
+        .register-title {
             text-align: center;
+
             margin-bottom: 28px;
         }
 
-        .login-title .icon {
+        .register-title .icon {
             font-size: 42px;
+
             margin-bottom: 8px;
         }
 
-        .login-title h2 {
+        .register-title h2 {
             margin: 0;
+
             color: #1e293b;
+
             font-size: 26px;
         }
 
-        .login-title p {
+        .register-title p {
             margin-top: 8px;
+
             color: #64748b;
+
             font-size: 14px;
         }
 
+
         /* =========================
-           MESSAGE
+           ERROR MESSAGE
         ========================= */
 
         .message {
             padding: 11px 13px;
-            border-radius: 8px;
-            margin-bottom: 18px;
-            font-size: 14px;
-        }
 
-        .success {
-            background: #ecfdf5;
-            color: #047857;
-            border: 1px solid #a7f3d0;
+            border-radius: 8px;
+
+            margin-bottom: 20px;
+
+            font-size: 14px;
         }
 
         .error {
             background: #fef2f2;
+
             color: #dc2626;
+
             border: 1px solid #fecaca;
-            text-align: left;
         }
+
 
         /* =========================
            FORM
         ========================= */
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
+
 
         label {
             display: block;
+
             margin-bottom: 7px;
 
             color: #334155;
+
             font-size: 14px;
+
             font-weight: bold;
         }
+
 
         /* =========================
            INPUT
         ========================= */
-
-        .input-wrapper {
-            position: relative;
-        }
 
         input {
             width: 100%;
@@ -170,11 +199,13 @@
             padding: 12px 14px;
 
             border: 1px solid #cbd5e1;
+
             border-radius: 9px;
 
             outline: none;
 
             font-size: 14px;
+
             color: #334155;
 
             background: white;
@@ -184,6 +215,7 @@
                     box-shadow 0.25s ease;
         }
 
+
         input:focus {
             border-color: #2563eb;
 
@@ -191,14 +223,24 @@
                     0 0 0 3px rgba(37, 99, 235, 0.10);
         }
 
+
         input::placeholder {
             color: #94a3b8;
         }
 
-        /* Password input có icon */
+
+        /* =========================
+           PASSWORD
+        ========================= */
+
+        .input-wrapper {
+            position: relative;
+        }
+
         .password-input {
             padding-right: 45px;
         }
+
 
         /* =========================
            EYE BUTTON
@@ -208,11 +250,13 @@
             position: absolute;
 
             right: 12px;
+
             top: 50%;
 
             transform: translateY(-50%);
 
             border: none;
+
             background: transparent;
 
             cursor: pointer;
@@ -228,17 +272,21 @@
                     transform 0.2s ease;
         }
 
+
         .toggle-password:hover {
             color: #2563eb;
 
-            transform: translateY(-50%) scale(1.1);
+            transform:
+                    translateY(-50%)
+                    scale(1.1);
         }
 
+
         /* =========================
-           LOGIN BUTTON
+           REGISTER BUTTON
         ========================= */
 
-        .login-button {
+        .register-button {
             width: 100%;
 
             padding: 12px 15px;
@@ -246,12 +294,15 @@
             margin-top: 5px;
 
             background: #2563eb;
+
             color: white;
 
             border: none;
+
             border-radius: 9px;
 
             font-size: 15px;
+
             font-weight: bold;
 
             cursor: pointer;
@@ -262,7 +313,8 @@
                     box-shadow 0.25s ease;
         }
 
-        .login-button:hover {
+
+        .register-button:hover {
             background: #1d4ed8;
 
             transform: translateY(-2px);
@@ -271,15 +323,17 @@
                     0 6px 14px rgba(37, 99, 235, 0.25);
         }
 
-        .login-button:active {
+
+        .register-button:active {
             transform: translateY(0);
         }
 
+
         /* =========================
-           REGISTER LINK
+           LOGIN LINK
         ========================= */
 
-        .register-link {
+        .login-link {
             text-align: center;
 
             margin: 22px 0 0;
@@ -289,7 +343,8 @@
             font-size: 14px;
         }
 
-        .register-link a {
+
+        .login-link a {
             color: #2563eb;
 
             font-weight: bold;
@@ -299,10 +354,13 @@
             transition: color 0.2s ease;
         }
 
-        .register-link a:hover {
+
+        .login-link a:hover {
             color: #1d4ed8;
+
             text-decoration: underline;
         }
+
 
         /* =========================
            BACK HOME
@@ -324,21 +382,23 @@
             transition: color 0.2s ease;
         }
 
+
         .back-home:hover {
             color: #2563eb;
         }
+
 
         /* =========================
            RESPONSIVE
         ========================= */
 
-        @media (max-width: 500px) {
+        @media (max-width: 550px) {
 
-            .login-page {
+            .register-page {
                 padding: 25px 15px;
             }
 
-            .login-container {
+            .register-container {
                 padding: 28px 22px;
             }
 
@@ -371,41 +431,32 @@
 
 
 <!-- =========================
-     LOGIN
+     REGISTER
 ========================= -->
 
-<div class="login-page">
+<div class="register-page">
 
-    <div class="login-container">
+    <div class="register-container">
 
 
         <!-- TITLE -->
 
-        <div class="login-title">
+        <div class="register-title">
 
             <div class="icon">
-                🔐
+                📝
             </div>
 
-            <h2>Đăng nhập</h2>
+            <h2>Đăng ký thành viên</h2>
 
             <p>
-                Đăng nhập để tiếp tục sử dụng hệ thống
+                Tạo tài khoản để bắt đầu mua bán sách
             </p>
 
         </div>
 
 
-        <!-- SUCCESS MESSAGE -->
-
-        <div
-                th:if="${success}"
-                class="message success"
-                th:text="${success}">
-        </div>
-
-
-        <!-- ERROR MESSAGE -->
+        <!-- ERROR -->
 
         <div
                 th:if="${error}"
@@ -414,9 +465,11 @@
         </div>
 
 
-        <!-- LOGIN FORM -->
+        <!-- REGISTER FORM -->
 
-        <form method="post" action="/login">
+        <form
+                th:action="@{/register}"
+                method="post">
 
 
             <!-- USERNAME -->
@@ -424,14 +477,14 @@
             <div class="form-group">
 
                 <label for="username">
-                    Username
+                    Tên đăng nhập (*)
                 </label>
 
                 <input
                         id="username"
                         type="text"
                         name="username"
-                        placeholder="Nhập username"
+                        placeholder="Nhập tên đăng nhập"
                         required
                 >
 
@@ -443,7 +496,7 @@
             <div class="form-group">
 
                 <label for="password">
-                    Password
+                    Mật khẩu (*)
                 </label>
 
                 <div class="input-wrapper">
@@ -453,11 +506,9 @@
                             class="password-input"
                             type="password"
                             name="password"
-                            placeholder="Nhập password"
+                            placeholder="Nhập mật khẩu"
                             required
                     >
-
-                    <!-- NÚT HIỆN / ẨN PASSWORD -->
 
                     <button
                             type="button"
@@ -474,27 +525,101 @@
             </div>
 
 
-            <!-- LOGIN BUTTON -->
+            <!-- FULL NAME -->
+
+            <div class="form-group">
+
+                <label for="fullName">
+                    Họ và tên (*)
+                </label>
+
+                <input
+                        id="fullName"
+                        type="text"
+                        name="fullName"
+                        placeholder="Nhập họ và tên"
+                        required
+                >
+
+            </div>
+
+
+            <!-- EMAIL -->
+
+            <div class="form-group">
+
+                <label for="email">
+                    Email (*)
+                </label>
+
+                <input
+                        id="email"
+                        type="email"
+                        name="email"
+                        placeholder="Nhập địa chỉ email"
+                        required
+                >
+
+            </div>
+
+
+            <!-- PHONE -->
+
+            <div class="form-group">
+
+                <label for="phone">
+                    Số điện thoại
+                </label>
+
+                <input
+                        id="phone"
+                        type="text"
+                        name="phone"
+                        placeholder="Nhập số điện thoại"
+                >
+
+            </div>
+
+
+            <!-- ADDRESS -->
+
+            <div class="form-group">
+
+                <label for="address">
+                    Địa chỉ
+                </label>
+
+                <input
+                        id="address"
+                        type="text"
+                        name="address"
+                        placeholder="Nhập địa chỉ"
+                >
+
+            </div>
+
+
+            <!-- REGISTER BUTTON -->
 
             <button
                     type="submit"
-                    class="login-button">
+                    class="register-button">
 
-                Đăng nhập
+                Đăng ký
 
             </button>
 
         </form>
 
 
-        <!-- REGISTER -->
+        <!-- LOGIN -->
 
-        <p class="register-link">
+        <p class="login-link">
 
-            Chưa có tài khoản?
+            Đã có tài khoản?
 
-            <a href="/register">
-                Đăng ký ngay
+            <a href="/login">
+                Đăng nhập tại đây
             </a>
 
         </p>

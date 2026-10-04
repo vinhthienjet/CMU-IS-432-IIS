@@ -3,123 +3,1036 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Online Book Reselling</title>
 
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background: #f5f5f5;
+
+        /* =========================
+           GLOBAL
+        ========================= */
+
+        * {
+            box-sizing: border-box;
         }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            color: #333;
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
 
         header {
-            background: #222;
+            background: linear-gradient(135deg, #1e293b, #334155);
             color: white;
-            padding: 20px;
+
+            padding: 30px 20px;
+
             text-align: center;
+
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
         }
 
-        .container {
+        header h1 {
+            margin: 0;
+
+            font-size: 32px;
+
+            letter-spacing: 0.5px;
+        }
+
+        header p {
+            margin: 8px 0 0;
+
+            color: #cbd5e1;
+
+            font-size: 15px;
+        }
+
+
+        /* =========================
+           MAIN WIDTH
+        ========================= */
+
+        .main-wrapper {
             width: 90%;
-            margin: 30px auto;
+            max-width: 1200px;
+
+            margin: 25px auto;
         }
 
-        .book-list {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-        }
 
-        .book {
+        /* =========================
+           USER AREA
+        ========================= */
+
+        .user-card {
             background: white;
-            padding: 20px;
+
+            padding: 14px 20px;
+
+            border-radius: 14px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            box-shadow:
+                    0 4px 15px rgba(0, 0, 0, 0.07);
+        }
+
+
+        /* LEFT USER */
+
+        .user-info {
+            display: flex;
+
+            align-items: center;
+        }
+
+
+        .avatar {
+            width: 50px;
+            height: 50px;
+
+            border-radius: 50%;
+
+            margin-right: 14px;
+
+            border: 3px solid #e2e8f0;
+        }
+
+        .cart-link {
+            position: relative;
+
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #334155;
+
+            text-decoration: none;
+
             border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+
+            font-size: 25px;
+
+            transition: all 0.25s ease;
         }
 
-        .book img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            border-radius: 8px;
+        .cart-link:hover {
+            background: #eff6ff;
+
+            color: #2563eb;
+
+            transform: translateY(-2px);
         }
 
-        .book h3 {
-            margin-top: 15px;
+
+        /* Badge số lượng */
+        .cart-badge {
+            position: absolute;
+
+            top: -3px;
+            right: -3px;
+
+            min-width: 19px;
+            height: 19px;
+
+            padding: 0 5px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #ef4444;
+
+            color: white;
+
+            border: 2px solid white;
+
+            border-radius: 50px;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            line-height: 1;
         }
 
-        .price {
-            color: #e53935;
-            font-size: 20px;
+
+        .user-name {
+            display: block;
+
+            font-weight: bold;
+
+            font-size: 16px;
+
+            margin-bottom: 5px;
+
+            color: #1e293b;
+        }
+
+
+        .role {
+            display: inline-block;
+
+            padding: 4px 9px;
+
+            background: #e0f2fe;
+
+            color: #0369a1;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+
             font-weight: bold;
         }
 
-        .button {
-            display: inline-block;
-            margin-top: 10px;
-            padding: 10px 15px;
-            background: #222;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
+
+        /* RIGHT USER ACTION */
+
+        .user-actions {
+            display: flex;
+
+            align-items: center;
+
+            gap: 18px;
         }
 
-        .button:hover {
-            background: #444;
+
+        /* =========================
+           CART ICON
+        ========================= */
+
+        .cart-link {
+            position: relative;
+
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            text-decoration: none;
+
+            color: #334155;
+
+            border-radius: 10px;
+
+            transition:
+                    background 0.25s ease,
+                    color 0.25s ease,
+                    transform 0.25s ease;
         }
+
+
+        .cart-link:hover {
+            background: #eff6ff;
+
+            color: #2563eb;
+
+            transform: translateY(-2px);
+        }
+
+
+        .cart-icon {
+            font-size: 24px;
+        }
+
+
+        /* CART BADGE */
+
+        .cart-badge {
+            position: absolute;
+
+            top: -2px;
+            right: -2px;
+
+            min-width: 19px;
+            height: 19px;
+
+            padding: 0 5px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background: #ef4444;
+
+            color: white;
+
+            border-radius: 50px;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            border: 2px solid white;
+        }
+
+
+        /* =========================
+           LOGOUT
+        ========================= */
+
+        .logout-btn {
+            text-decoration: none;
+
+            padding: 9px 16px;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            background: white;
+
+            color: #dc2626;
+
+            border: 1px solid #fecaca;
+
+            transition: all 0.25s ease;
+        }
+
+
+        .logout-btn:hover {
+            background: #dc2626;
+
+            color: white;
+
+            transform: translateY(-2px);
+        }
+
+
+        /* =========================
+           LOGIN
+        ========================= */
+
+        .login-area {
+            background: white;
+
+            padding: 18px 20px;
+
+            border-radius: 14px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            box-shadow:
+                    0 4px 15px rgba(0, 0, 0, 0.07);
+        }
+
+
+        .login-area p {
+            margin: 0;
+
+            color: #64748b;
+
+            font-size: 14px;
+        }
+
+
+        .login-btn {
+            text-decoration: none;
+
+            padding: 10px 18px;
+
+            border-radius: 8px;
+
+            background: #2563eb;
+
+            color: white;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            transition: all 0.25s ease;
+        }
+
+
+        .login-btn:hover {
+            background: #1d4ed8;
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                    0 5px 12px rgba(37, 99, 235, 0.3);
+        }
+
+
+        /* =========================
+           NAVIGATION
+        ========================= */
+
+        .nav-tabs {
+            margin-top: 18px;
+
+            background: white;
+
+            border-radius: 12px;
+
+            padding: 5px;
+
+            display: flex;
+
+            box-shadow:
+                    0 4px 15px rgba(0, 0, 0, 0.06);
+        }
+
+
+        .nav-tab {
+            flex: 1;
+
+            text-align: center;
+
+            text-decoration: none;
+
+            color: #64748b;
+
+            padding: 13px 15px;
+
+            border-radius: 9px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            transition: all 0.25s ease;
+        }
+
+
+        .nav-tab:hover {
+            color: #2563eb;
+
+            background: #eff6ff;
+        }
+
+
+        .nav-tab.active {
+            background: #2563eb;
+
+            color: white;
+
+            box-shadow:
+                    0 3px 8px rgba(37, 99, 235, 0.25);
+        }
+
+
+        /* =========================
+           PRODUCT HEADER
+        ========================= */
+
+        .product-section {
+            margin-top: 35px;
+        }
+
+
+        .section-header {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 20px;
+        }
+
+
+        .section-header h2 {
+            margin: 0;
+
+            color: #1e293b;
+
+            font-size: 25px;
+        }
+
+
+        .section-header span {
+            color: #64748b;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           PRODUCT LIST
+        ========================= */
+
+        .book-list {
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 22px;
+        }
+
+
+        /* =========================
+           PRODUCT CARD
+        ========================= */
+
+        .book {
+            background: white;
+
+            padding: 14px;
+
+            border-radius: 15px;
+
+            overflow: hidden;
+
+            box-shadow:
+                    0 3px 12px rgba(0, 0, 0, 0.07);
+
+            transition:
+                    transform 0.3s ease,
+                    box-shadow 0.3s ease;
+        }
+
+
+        .book:hover {
+            transform: translateY(-8px);
+
+            box-shadow:
+                    0 15px 30px rgba(0, 0, 0, 0.13);
+        }
+
+
+        /* =========================
+           IMAGE
+        ========================= */
+
+        .book-image-wrapper {
+            overflow: hidden;
+
+            border-radius: 11px;
+
+            background: #f1f5f9;
+        }
+
+
+        .book img {
+            width: 100%;
+
+            height: 260px;
+
+            object-fit: cover;
+
+            display: block;
+
+            transition:
+                    transform 0.4s ease;
+        }
+
+
+        .book:hover img {
+            transform: scale(1.06);
+        }
+
+
+        /* =========================
+           BOOK INFORMATION
+        ========================= */
+
+        .book h3 {
+            margin: 17px 5px 10px;
+
+            font-size: 18px;
+
+            color: #1e293b;
+
+            white-space: nowrap;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+        }
+
+
+        .book-info {
+            margin: 7px 5px;
+
+            color: #64748b;
+
+            font-size: 14px;
+        }
+
+
+        .book-info span {
+            color: #334155;
+
+            font-weight: 500;
+        }
+
+
+        .price {
+            margin: 14px 5px 8px;
+
+            color: #e53935;
+
+            font-size: 21px;
+
+            font-weight: bold;
+        }
+
+
+        .quantity {
+            margin: 5px;
+
+            font-size: 13px;
+
+            color: #64748b;
+        }
+
+
+        /* =========================
+           DETAIL BUTTON
+        ========================= */
+
+        .button {
+            display: block;
+
+            margin-top: 15px;
+
+            padding: 11px 15px;
+
+            background: #2563eb;
+
+            color: white;
+
+            text-align: center;
+
+            text-decoration: none;
+
+            border-radius: 9px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            transition: all 0.25s ease;
+        }
+
+
+        .button:hover {
+            background: #1d4ed8;
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                    0 5px 12px rgba(37, 99, 235, 0.25);
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1000px) {
+
+            .book-list {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 750px) {
+
+            .book-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .user-card {
+                gap: 15px;
+            }
+
+            .nav-tab {
+                font-size: 13px;
+
+                padding: 11px 5px;
+            }
+
+        }
+
+
+        @media (max-width: 550px) {
+
+            .main-wrapper {
+                width: 94%;
+            }
+
+
+            .user-card {
+                align-items: flex-start;
+            }
+
+
+            .user-actions {
+                gap: 8px;
+            }
+
+
+            .logout-btn {
+                padding: 8px 10px;
+
+                font-size: 12px;
+            }
+
+
+            .nav-tabs {
+                flex-wrap: wrap;
+            }
+
+
+            .nav-tab {
+                flex: 1 1 50%;
+            }
+
+
+            .book-list {
+                grid-template-columns: 1fr;
+            }
+
+
+            .section-header {
+                display: block;
+            }
+
+
+            .section-header span {
+                display: block;
+
+                margin-top: 5px;
+            }
+
+        }
+
     </style>
+
 </head>
+
 
 <body>
 
+
+<!-- ==================================================
+     HEADER
+================================================== -->
+
 <header>
-    <h1>📚 Online Book Reselling</h1>
-    <p>Danh sách sách</p>
+
+    <h1>
+        📚 Online Book Reselling
+    </h1>
+
+    <p>
+        Nền tảng mua bán sách trực tuyến
+    </p>
+
 </header>
 
-<div class="container">
 
-    <h2>Tất cả sách</h2>
+<div class="main-wrapper">
 
-    <div class="book-list">
 
-        <div class="book" th:each="book : ${books}">
+    <!-- ==================================================
+         USER AREA
+    ================================================== -->
 
-            <img th:if="${book.image != null}"
-                 th:src="@{'/images/' + ${book.image}}"
-                 alt="Book Image">
+    <!-- CHƯA ĐĂNG NHẬP -->
 
-            <h3 th:text="${book.title}"></h3>
+    <div
+            th:if="${session.loggedInUser == null}"
+            class="login-area">
 
-            <p>
-                Tác giả:
-                <span th:text="${book.author}"></span>
-            </p>
+        <p>
+            Chào mừng bạn đến với Online Book Reselling
+        </p>
 
-            <p>
-                Thể loại:
-                <span th:text="${book.category.name}"></span>
-            </p>
+        <a
+                href="/login"
+                class="login-btn">
 
-            <p class="price"
-               th:text="${book.price} + ' VNĐ'">
-            </p>
+            🔐 Đăng nhập
 
-            <p>
-                Số lượng:
-                <span th:text="${book.quantity}"></span>
-            </p>
+        </a>
 
-            <a class="button"
-               th:href="@{'/books/' + ${book.id}}">
-                Xem chi tiết
+    </div>
+
+
+    <!-- ĐÃ ĐĂNG NHẬP -->
+
+    <div
+            th:if="${session.loggedInUser != null}"
+            class="user-card">
+
+
+        <!-- USER -->
+
+        <div class="user-info">
+
+            <img
+                    src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                    alt="Avatar"
+                    class="avatar"
+            >
+
+            <div>
+
+                <span class="fw-bold" th:text="${session.loggedInUser.fullName}">
+                    Tên người dùng
+                </span>
+
+                <span
+                        class="role"
+                        th:text="${session.loggedInUser.role}">
+
+                    Role
+
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- USER ACTIONS -->
+
+        <div class="user-actions">
+
+
+            <!-- CART -->
+            <a href="/cart"
+               class="cart-link"
+               title="Giỏ hàng">
+
+                🛒
+
+                <!-- Số lượng sản phẩm trong giỏ -->
+                <span
+                        class="cart-badge"
+                        th:if="${session.cartCount != null && session.cartCount > 0}"
+                        th:text="${session.cartCount}">
+        0
+    </span>
+
+            </a>
+
+
+
+            <!-- LOGOUT -->
+
+            <a
+                    href="/logout"
+                    class="logout-btn">
+
+                Đăng xuất
+
             </a>
 
         </div>
 
     </div>
 
+
+    <!-- ==================================================
+         NAVIGATION
+    ================================================== -->
+
+    <div class="nav-tabs">
+
+
+        <!-- HOME -->
+
+        <a
+                href="/"
+                class="nav-tab active">
+
+            🏠 Trang chủ
+
+        </a>
+
+
+        <!-- USER INFORMATION -->
+
+        <a
+                href="/profile"
+                class="nav-tab">
+
+            👤 Thông tin cá nhân
+
+        </a>
+
+
+        <!-- ORDERS -->
+
+        <a
+                href="/orders"
+                class="nav-tab">
+
+            🛍️ Đơn hàng
+
+        </a>
+
+
+        <!-- PRODUCT MANAGEMENT -->
+
+        <a
+                href="/seller/products"
+                class="nav-tab">
+
+            📦 Quản lý sản phẩm
+
+        </a>
+
+
+    </div>
+
+
+    <!-- ==================================================
+         PRODUCTS
+    ================================================== -->
+
+    <div class="product-section">
+
+
+        <div class="section-header">
+
+            <h2>
+                📚 Tất cả sản phẩm
+            </h2>
+
+            <span>
+                Khám phá những cuốn sách bạn yêu thích
+            </span>
+
+        </div>
+
+
+        <!-- PRODUCT LIST -->
+
+        <div class="book-list">
+
+
+            <!-- PRODUCT -->
+
+            <div
+                    class="book"
+                    th:each="book : ${books}">
+
+
+                <!-- IMAGE -->
+
+                <div class="book-image-wrapper">
+
+                    <img
+                            th:if="${book.image != null}"
+                            th:src="@{'/images/' + ${book.image}}"
+                            alt="Book Image">
+
+                </div>
+
+
+                <!-- TITLE -->
+
+                <h3
+                        th:text="${book.title}">
+                </h3>
+
+
+                <!-- AUTHOR -->
+
+                <p class="book-info">
+
+                    ✍️ Tác giả:
+
+                    <span
+                            th:text="${book.author}">
+                    </span>
+
+                </p>
+
+
+                <!-- CATEGORY -->
+
+                <p class="book-info">
+
+                    🏷️ Thể loại:
+
+                    <span
+                            th:text="${book.category.name}">
+                    </span>
+
+                </p>
+
+
+                <!-- PRICE -->
+
+                <p
+                        class="price"
+                        th:text="${book.price} + ' VNĐ'">
+                </p>
+
+
+                <!-- QUANTITY -->
+
+                <p class="quantity">
+
+                    📦 Còn lại:
+
+                    <span
+                            th:text="${book.quantity}">
+                    </span>
+
+                    cuốn
+
+                </p>
+
+
+                <!-- DETAIL -->
+
+                <a
+                        class="button"
+                        th:href="@{'/books/' + ${book.id}}">
+
+                    Xem chi tiết →
+
+                </a>
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
 </div>
 
+
 </body>
+
 </html>

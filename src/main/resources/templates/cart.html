@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Giỏ hàng của bạn</title>
+
+
+    <style>
+
+        /* =========================
+           GLOBAL
+        ========================= */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+
+            font-family: Arial, sans-serif;
+
+            background: #f4f6f9;
+
+            color: #334155;
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+            background: linear-gradient(
+                    135deg,
+                    #1e293b,
+                    #334155
+            );
+
+            color: white;
+
+            padding: 28px 20px;
+
+            text-align: center;
+
+            box-shadow:
+                    0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+
+        header h1 {
+            margin: 0;
+
+            font-size: 30px;
+        }
+
+
+        header p {
+            margin: 8px 0 0;
+
+            color: #cbd5e1;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            width: 90%;
+
+            max-width: 1200px;
+
+            margin: 20px auto 0;
+
+            background: white;
+
+            padding: 6px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                    0 4px 15px rgba(0, 0, 0, 0.06);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 5px;
+        }
+
+
+        .nav-link {
+            text-decoration: none;
+
+            color: #64748b;
+
+            padding: 11px 18px;
+
+            border-radius: 9px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            transition: all 0.25s ease;
+        }
+
+
+        .nav-link:hover {
+            color: #2563eb;
+
+            background: #eff6ff;
+        }
+
+
+        .nav-link.active {
+            background: #2563eb;
+
+            color: white;
+        }
+
+
+        .cart-nav {
+            position: relative;
+        }
+
+
+        .cart-count {
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            min-width: 19px;
+
+            height: 19px;
+
+            padding: 0 5px;
+
+            margin-left: 4px;
+
+            background: #ef4444;
+
+            color: white;
+
+            border-radius: 50px;
+
+            font-size: 11px;
+
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           MAIN CONTAINER
+        ========================= */
+
+        .container {
+            width: 90%;
+
+            max-width: 1200px;
+
+            margin: 30px auto 50px;
+        }
+
+
+        /* =========================
+           PAGE TITLE
+        ========================= */
+
+        .page-title {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 20px;
+        }
+
+
+        .page-title h2 {
+            margin: 0;
+
+            color: #1e293b;
+
+            font-size: 26px;
+        }
+
+
+        .item-count {
+            color: #64748b;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           EMPTY CART
+        ========================= */
+
+        .empty-cart {
+            background: white;
+
+            padding: 60px 30px;
+
+            border-radius: 15px;
+
+            text-align: center;
+
+            box-shadow:
+                    0 5px 20px rgba(0, 0, 0, 0.07);
+        }
+
+
+        .empty-icon {
+            font-size: 60px;
+
+            margin-bottom: 15px;
+        }
+
+
+        .empty-cart h3 {
+            margin: 0 0 10px;
+
+            color: #1e293b;
+        }
+
+
+        .empty-cart p {
+            margin-bottom: 25px;
+
+            color: #64748b;
+        }
+
+
+        /* =========================
+           BUTTON
+        ========================= */
+
+        .btn-primary {
+            display: inline-block;
+
+            padding: 11px 20px;
+
+            background: #2563eb;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 9px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            transition: all 0.25s ease;
+        }
+
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                    0 6px 14px rgba(37, 99, 235, 0.25);
+        }
+
+
+        /* =========================
+           CART CARD
+        ========================= */
+
+        .cart-card {
+            background: white;
+
+            border-radius: 15px;
+
+            overflow: hidden;
+
+            box-shadow:
+                    0 5px 20px rgba(0, 0, 0, 0.07);
+        }
+
+
+        /* =========================
+           TABLE
+        ========================= */
+
+        .cart-table {
+            width: 100%;
+
+            border-collapse: collapse;
+        }
+
+
+        .cart-table thead {
+            background: #f8fafc;
+        }
+
+
+        .cart-table th {
+            padding: 16px;
+
+            text-align: left;
+
+            color: #475569;
+
+            font-size: 13px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.3px;
+
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+
+        .cart-table td {
+            padding: 18px 16px;
+
+            border-bottom: 1px solid #f1f5f9;
+
+            vertical-align: middle;
+
+            font-size: 14px;
+        }
+
+
+        .cart-table tbody tr {
+            transition: background 0.2s ease;
+        }
+
+
+        .cart-table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+
+        /* =========================
+           BOOK NAME
+        ========================= */
+
+        .book-name {
+            display: flex;
+
+            align-items: center;
+        }
+
+
+        .book-link {
+            color: #2563eb;
+
+            text-decoration: none;
+
+            font-weight: bold;
+
+            transition: color 0.2s ease;
+        }
+
+
+        .book-link:hover {
+            color: #1d4ed8;
+
+            text-decoration: underline;
+        }
+
+
+        /* =========================
+           PRICE
+        ========================= */
+
+        .price {
+            font-weight: bold;
+
+            color: #334155;
+        }
+
+
+        .total-item {
+            color: #e53935;
+
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           QUANTITY
+        ========================= */
+
+        .quantity-control {
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+        }
+
+
+        .quantity-btn {
+            width: 32px;
+
+            height: 32px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            text-decoration: none;
+
+            background: #f1f5f9;
+
+            color: #334155;
+
+            border: 1px solid #cbd5e1;
+
+            border-radius: 7px;
+
+            font-size: 18px;
+
+            font-weight: bold;
+
+            transition: all 0.2s ease;
+        }
+
+
+        .quantity-btn:hover {
+            background: #2563eb;
+
+            color: white;
+
+            border-color: #2563eb;
+        }
+
+
+        .quantity-number {
+            min-width: 30px;
+
+            text-align: center;
+
+            font-weight: bold;
+
+            color: #1e293b;
+        }
+
+
+        /* =========================
+           REMOVE
+        ========================= */
+
+        .remove-btn {
+            display: inline-block;
+
+            padding: 7px 12px;
+
+            background: #fef2f2;
+
+            color: #dc2626;
+
+            border: 1px solid #fecaca;
+
+            border-radius: 7px;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            transition: all 0.2s ease;
+        }
+
+
+        .remove-btn:hover {
+            background: #dc2626;
+
+            color: white;
+        }
+
+
+        /* =========================
+           CART FOOTER
+        ========================= */
+
+        .cart-footer {
+            padding: 22px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            background: #f8fafc;
+
+            border-top: 1px solid #e2e8f0;
+        }
+
+
+        .continue-shopping {
+            color: #2563eb;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: bold;
+        }
+
+
+        .continue-shopping:hover {
+            text-decoration: underline;
+        }
+
+
+        .checkout-area {
+            display: flex;
+
+            align-items: center;
+
+            gap: 20px;
+        }
+
+
+        .total-label {
+            color: #64748b;
+
+            font-size: 14px;
+        }
+
+
+        .total-price {
+            color: #e53935;
+
+            font-size: 24px;
+
+            font-weight: bold;
+        }
+
+
+        .checkout-btn {
+            padding: 12px 22px;
+
+            background: #16a34a;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 9px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: all 0.25s ease;
+        }
+
+
+        .checkout-btn:hover {
+            background: #15803d;
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                    0 6px 14px rgba(22, 163, 74, 0.25);
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            .container {
+                width: 95%;
+            }
+
+
+            .cart-table {
+                min-width: 700px;
+            }
+
+
+            .cart-card {
+                overflow-x: auto;
+            }
+
+
+            .cart-footer {
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .checkout-area {
+                justify-content: space-between;
+            }
+
+        }
+
+
+        @media (max-width: 550px) {
+
+            .navbar {
+                flex-wrap: wrap;
+            }
+
+
+            .nav-link {
+                flex: 1 1 45%;
+
+                text-align: center;
+            }
+
+
+            .page-title {
+                display: block;
+            }
+
+
+            .item-count {
+                display: block;
+
+                margin-top: 5px;
+            }
+
+
+            .checkout-area {
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .checkout-btn {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header>
+
+    <h1>
+        📚 Online Book Reselling
+    </h1>
+
+    <p>
+        Quản lý giỏ hàng của bạn
+    </p>
+
+</header>
+
+
+<!-- =========================
+     NAVBAR
+========================= -->
+
+<div class="navbar">
+
+    <a
+            href="/"
+            class="nav-link">
+
+        🏠 Trang chủ
+
+    </a>
+
+
+    <a
+            href="/cart"
+            class="nav-link active cart-nav">
+
+        🛒 Giỏ hàng
+
+        <span
+                class="cart-count"
+                th:text="${session.cartCount != null ? session.cartCount : '0'}">
+
+            0
+
+        </span>
+
+    </a>
+
+</div>
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<div class="container">
+
+
+    <div class="page-title">
+
+        <h2>
+            🛒 Giỏ hàng của bạn
+        </h2>
+
+        <span class="item-count">
+
+            Sản phẩm trong giỏ hàng
+
+        </span>
+
+    </div>
+
+
+    <!-- =========================
+         EMPTY CART
+    ========================= -->
+
+    <div
+            th:if="${cartItems == null or cartItems.isEmpty()}"
+            class="empty-cart">
+
+
+        <div class="empty-icon">
+            🛒
+        </div>
+
+
+        <h3>
+            Giỏ hàng của bạn đang trống
+        </h3>
+
+
+        <p>
+            Hãy khám phá các sản phẩm và thêm sách bạn yêu thích vào giỏ hàng.
+        </p>
+
+
+        <a
+                href="/"
+                class="btn-primary">
+
+            ← Tiếp tục mua sắm
+
+        </a>
+
+    </div>
+
+
+    <!-- =========================
+         CART WITH PRODUCTS
+    ========================= -->
+
+    <div
+            th:if="${cartItems != null and !cartItems.isEmpty()}"
+            class="cart-card">
+
+
+        <table class="cart-table">
+
+
+            <thead>
+
+            <tr>
+
+                <th>
+                    Tên sách
+                </th>
+
+                <th>
+                    Đơn giá
+                </th>
+
+                <th>
+                    Số lượng
+                </th>
+
+                <th>
+                    Thành tiền
+                </th>
+
+                <th>
+                    Thao tác
+                </th>
+
+            </tr>
+
+            </thead>
+
+
+            <tbody>
+
+
+            <tr th:each="item : ${cartItems}">
+
+
+                <!-- TÊN SÁCH -->
+
+                <td>
+
+                    <div class="book-name">
+
+                        <a
+                                class="book-link"
+
+                                th:href="@{/books/{id}(id=${item.book.id})}"
+
+                                th:text="${item.book.title}">
+
+                            Tên sách
+
+                        </a>
+
+                    </div>
+
+                </td>
+
+
+                <!-- ĐƠN GIÁ -->
+
+                <td>
+
+                    <span
+                            class="price"
+                            th:text="${item.book.price}">
+
+                        100,000
+
+                    </span>
+
+                    <span>
+                        VNĐ
+                    </span>
+
+                </td>
+
+
+                <!-- SỐ LƯỢNG -->
+
+                <td>
+
+                    <div class="quantity-control">
+
+
+                        <a
+                                class="quantity-btn"
+
+                                th:href="@{/cart/decrease/{id}(id=${item.id})}">
+
+                            −
+
+                        </a>
+
+
+                        <span
+                                class="quantity-number"
+                                th:text="${item.quantity}">
+
+                            1
+
+                        </span>
+
+
+                        <a
+                                class="quantity-btn"
+
+                                th:href="@{/cart/increase/{id}(id=${item.id})}">
+
+                            +
+
+                        </a>
+
+
+                    </div>
+
+                </td>
+
+
+                <!-- THÀNH TIỀN -->
+
+                <td>
+
+                    <span
+                            class="total-item"
+                            th:text="${item.book.price * item.quantity}">
+
+                        100,000
+
+                    </span>
+
+                    <span>
+                        VNĐ
+                    </span>
+
+                </td>
+
+
+                <!-- XÓA -->
+
+                <td>
+
+                    <a
+                            class="remove-btn"
+
+                            th:href="@{/cart/remove/{id}(id=${item.id})}">
+
+                        🗑 Xóa
+
+                    </a>
+
+                </td>
+
+
+            </tr>
+
+
+            </tbody>
+
+        </table>
+
+
+        <!-- =========================
+             CART FOOTER
+        ========================= -->
+
+        <div class="cart-footer">
+
+
+            <a
+                    href="/"
+                    class="continue-shopping">
+
+                ← Tiếp tục mua sắm
+
+            </a>
+
+
+            <div class="checkout-area">
+
+
+                <div>
+
+                    <span class="total-label">
+                        Tổng cộng:
+                    </span>
+
+                    <span
+                            class="total-price"
+                            th:text="${totalPrice}">
+
+                        0
+
+                    </span>
+
+                    <span class="total-label">
+                        VNĐ
+                    </span>
+
+                </div>
+
+
+                <button
+                        class="checkout-btn">
+
+                    💳 Tiến hành thanh toán
+
+                </button>
+
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+</body>
+</html>

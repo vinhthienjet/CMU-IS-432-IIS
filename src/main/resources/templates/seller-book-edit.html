@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sửa thông tin sách</title>
+
+    <style>
+
+        /* =========================
+           GLOBAL
+        ========================= */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+
+            font-family: Arial, sans-serif;
+
+            background: #f4f6f9;
+
+            color: #334155;
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+            background: linear-gradient(
+                    135deg,
+                    #1e293b,
+                    #334155
+            );
+
+            color: white;
+
+            padding: 28px 20px;
+
+            text-align: center;
+
+            box-shadow:
+                    0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        header h1 {
+            margin: 0;
+
+            font-size: 30px;
+        }
+
+        header p {
+            margin: 8px 0 0;
+
+            color: #cbd5e1;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           CONTAINER
+        ========================= */
+
+        .container {
+            width: 90%;
+
+            max-width: 700px;
+
+            margin: 30px auto 50px;
+        }
+
+
+        /* =========================
+           BACK BUTTON
+        ========================= */
+
+        .back-btn {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            margin-bottom: 18px;
+
+            padding: 9px 15px;
+
+            background: white;
+
+            color: #475569;
+
+            text-decoration: none;
+
+            border: 1px solid #cbd5e1;
+
+            border-radius: 9px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            transition: all 0.25s ease;
+        }
+
+        .back-btn:hover {
+            background: #eff6ff;
+
+            color: #2563eb;
+
+            border-color: #93c5fd;
+
+            transform: translateX(-2px);
+        }
+
+
+        /* =========================
+           FORM CARD
+        ========================= */
+
+        .form-card {
+            background: white;
+
+            border-radius: 16px;
+
+            padding: 30px;
+
+            box-shadow:
+                    0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+
+        /* =========================
+           TITLE
+        ========================= */
+
+        .form-title {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin: 0 0 8px;
+
+            color: #1e293b;
+
+            font-size: 26px;
+        }
+
+        .form-description {
+            margin: 0 0 25px;
+
+            color: #64748b;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           FORM GROUP
+        ========================= */
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+
+        .form-label {
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #334155;
+
+            font-size: 14px;
+
+            font-weight: bold;
+        }
+
+
+        .required {
+            color: #dc2626;
+        }
+
+
+        /* =========================
+           INPUT
+        ========================= */
+
+        .form-control,
+        .form-select {
+            width: 100%;
+
+            padding: 12px 13px;
+
+            border: 1px solid #cbd5e1;
+
+            border-radius: 9px;
+
+            background: white;
+
+            color: #1e293b;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 14px;
+
+            outline: none;
+
+            transition: all 0.25s ease;
+        }
+
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #2563eb;
+
+            box-shadow:
+                    0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+
+        .form-control::placeholder {
+            color: #94a3b8;
+        }
+
+
+        textarea.form-control {
+            resize: vertical;
+
+            min-height: 120px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           BOOK ID
+        ========================= */
+
+        .book-id {
+            display: inline-block;
+
+            margin-bottom: 22px;
+
+            padding: 6px 10px;
+
+            background: #eff6ff;
+
+            color: #2563eb;
+
+            border: 1px solid #bfdbfe;
+
+            border-radius: 7px;
+
+            font-size: 13px;
+
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           STATUS
+        ========================= */
+
+        .status-help {
+            margin-top: 6px;
+
+            color: #94a3b8;
+
+            font-size: 12px;
+        }
+
+
+        /* =========================
+           ACTIONS
+        ========================= */
+
+        .form-actions {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 12px;
+
+            margin-top: 28px;
+
+            padding-top: 22px;
+
+            border-top: 1px solid #e2e8f0;
+        }
+
+
+        /* =========================
+           BUTTONS
+        ========================= */
+
+        .btn {
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 11px 20px;
+
+            border-radius: 9px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            text-decoration: none;
+
+            border: none;
+
+            cursor: pointer;
+
+            transition: all 0.25s ease;
+        }
+
+
+        .btn-back {
+            background: #f1f5f9;
+
+            color: #475569;
+
+            border: 1px solid #cbd5e1;
+        }
+
+
+        .btn-back:hover {
+            background: #e2e8f0;
+
+            color: #334155;
+        }
+
+
+        .btn-save {
+            background: #2563eb;
+
+            color: white;
+        }
+
+
+        .btn-save:hover {
+            background: #1d4ed8;
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                    0 6px 14px rgba(37, 99, 235, 0.25);
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 600px) {
+
+            .container {
+                width: 94%;
+            }
+
+
+            .form-card {
+                padding: 20px;
+            }
+
+
+            .form-title {
+                font-size: 23px;
+            }
+
+
+            .form-actions {
+                flex-direction: column-reverse;
+
+                align-items: stretch;
+            }
+
+
+            .btn {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header>
+
+    <h1>
+        📚 Online Book Reselling
+    </h1>
+
+    <p>
+        Quản lý thông tin sách
+    </p>
+
+</header>
+
+
+<div class="container">
+
+
+    <!-- =========================
+         BACK
+    ========================= -->
+
+    <a
+            href="/seller/products"
+            class="back-btn">
+
+        ← Quay lại danh sách sản phẩm
+
+    </a>
+
+
+    <!-- =========================
+         FORM CARD
+    ========================= -->
+
+    <div class="form-card">
+
+
+        <h2 class="form-title">
+            ✏️ Chỉnh sửa thông tin sách
+        </h2>
+
+
+        <p class="form-description">
+            Cập nhật thông tin của cuốn sách bên dưới.
+            Vui lòng kiểm tra lại thông tin trước khi lưu.
+        </p>
+
+
+        <!-- BOOK ID -->
+
+        <div class="book-id">
+
+            📖 Mã sách:
+            <span th:text="${book.id}">
+                1
+            </span>
+
+        </div>
+
+
+        <!-- =========================
+             FORM
+        ========================= -->
+
+        <form
+                th:action="@{/seller/book/update}"
+                method="post">
+
+
+            <!-- Ẩn ID sách để gửi lên server -->
+
+            <input
+                    type="hidden"
+                    name="id"
+                    th:value="${book.id}" />
+
+
+            <!-- =========================
+                 TITLE
+            ========================= -->
+
+            <div class="form-group">
+
+                <label class="form-label">
+
+                    📚 Tên sách
+                    <span class="required">(*)</span>
+
+                </label>
+
+                <input
+                        type="text"
+                        name="title"
+                        class="form-control"
+                        th:value="${book.title}"
+                        placeholder="Nhập tên sách"
+                        required />
+
+            </div>
+
+
+            <!-- =========================
+                 PRICE
+            ========================= -->
+
+            <div class="form-group">
+
+                <label class="form-label">
+
+                    💰 Giá tiền (VNĐ)
+                    <span class="required">(*)</span>
+
+                </label>
+
+                <input
+                        type="number"
+                        name="price"
+                        class="form-control"
+                        th:value="${book.price}"
+                        placeholder="Nhập giá sách"
+                        min="0"
+                        required />
+
+            </div>
+
+
+            <!-- =========================
+                 STATUS
+            ========================= -->
+
+            <div class="form-group">
+
+                <label class="form-label">
+
+                    📌 Trạng thái
+
+                </label>
+
+                <select
+                        name="status"
+                        class="form-select">
+
+                    <option
+                            value="Đang bán"
+                            th:selected="${book.status == 'Đang bán'}">
+
+                        🟢 Đang bán
+
+                    </option>
+
+                    <option
+                            value="Đã bán"
+                            th:selected="${book.status == 'Đã bán'}">
+
+                        🔴 Đã bán
+
+                    </option>
+
+                </select>
+
+                <div class="status-help">
+
+                    Chọn trạng thái hiện tại của sản phẩm.
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 DESCRIPTION
+            ========================= -->
+
+            <div class="form-group">
+
+                <label class="form-label">
+
+                    📝 Mô tả chi tiết
+
+                </label>
+
+                <textarea
+                        name="description"
+                        class="form-control"
+                        rows="4"
+                        placeholder="Nhập mô tả chi tiết về cuốn sách..."
+                        th:text="${book.description}"></textarea>
+
+            </div>
+
+
+            <!-- =========================
+                 ACTIONS
+            ========================= -->
+
+            <div class="form-actions">
+
+
+                <a
+                        href="/seller/products"
+                        class="btn btn-back">
+
+                    ← Quay lại
+
+                </a>
+
+
+                <button
+                        type="submit"
+                        class="btn btn-save">
+
+                    💾 Lưu thay đổi
+
+                </button>
+
+
+            </div>
+
+
+        </form>
+
+    </div>
+
+</div>
+
+
+</body>
+
+</html>
