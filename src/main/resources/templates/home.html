@@ -215,80 +215,6 @@
 
 
         /* =========================
-           CART ICON
-        ========================= */
-
-        .cart-link {
-            position: relative;
-
-            width: 42px;
-            height: 42px;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            text-decoration: none;
-
-            color: #334155;
-
-            border-radius: 10px;
-
-            transition:
-                    background 0.25s ease,
-                    color 0.25s ease,
-                    transform 0.25s ease;
-        }
-
-
-        .cart-link:hover {
-            background: #eff6ff;
-
-            color: #2563eb;
-
-            transform: translateY(-2px);
-        }
-
-
-        .cart-icon {
-            font-size: 24px;
-        }
-
-
-        /* CART BADGE */
-
-        .cart-badge {
-            position: absolute;
-
-            top: -2px;
-            right: -2px;
-
-            min-width: 19px;
-            height: 19px;
-
-            padding: 0 5px;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            background: #ef4444;
-
-            color: white;
-
-            border-radius: 50px;
-
-            font-size: 11px;
-
-            font-weight: bold;
-
-            border: 2px solid white;
-        }
-
-
-        /* =========================
            LOGOUT
         ========================= */
 
@@ -323,7 +249,7 @@
 
 
         /* =========================
-           LOGIN
+           LOGIN AREA
         ========================= */
 
         .login-area {
@@ -441,7 +367,7 @@
 
 
         /* =========================
-           PRODUCT HEADER
+           PRODUCT SECTION
         ========================= */
 
         .product-section {
@@ -650,83 +576,47 @@
         ========================= */
 
         @media (max-width: 1000px) {
-
             .book-list {
                 grid-template-columns: repeat(3, 1fr);
             }
-
         }
 
-
         @media (max-width: 750px) {
-
             .book-list {
                 grid-template-columns: repeat(2, 1fr);
             }
-
             .user-card {
                 gap: 15px;
             }
-
             .nav-tab {
                 font-size: 13px;
-
                 padding: 11px 5px;
             }
-
         }
 
-
         @media (max-width: 550px) {
-
             .main-wrapper {
                 width: 94%;
             }
-
-
             .user-card {
                 align-items: flex-start;
             }
-
-
             .user-actions {
                 gap: 8px;
             }
-
-
             .logout-btn {
                 padding: 8px 10px;
-
                 font-size: 12px;
             }
-
-
             .nav-tabs {
                 flex-wrap: wrap;
             }
-
-
             .nav-tab {
                 flex: 1 1 50%;
             }
-
-
             .book-list {
                 grid-template-columns: 1fr;
             }
-
-
-            .section-header {
-                display: block;
-            }
-
-
-            .section-header span {
-                display: block;
-
-                margin-top: 5px;
-            }
-
         }
 
     </style>
@@ -736,312 +626,132 @@
 
 <body>
 
-
-<!-- ==================================================
-     HEADER
-================================================== -->
-
+<!-- HEADER -->
 <header>
-
-    <h1>
-        📚 Online Book Reselling
-    </h1>
-
-    <p>
-        Nền tảng mua bán sách trực tuyến
-    </p>
-
+    <h1>📚 Online Book Reselling</h1>
+    <p>Nền tảng mua bán sách trực tuyến</p>
 </header>
-
 
 <div class="main-wrapper">
 
-
-    <!-- ==================================================
-         USER AREA
-    ================================================== -->
-
     <!-- CHƯA ĐĂNG NHẬP -->
-
-    <div
-            th:if="${session.loggedInUser == null}"
-            class="login-area">
-
-        <p>
-            Chào mừng bạn đến với Online Book Reselling
-        </p>
-
-        <a
-                href="/login"
-                class="login-btn">
-
-            🔐 Đăng nhập
-
-        </a>
-
+    <div th:if="${session.loggedInUser == null}" class="login-area">
+        <p>Chào mừng bạn đến với Online Book Reselling</p>
+        <a href="/login" class="login-btn">🔐 Đăng nhập</a>
     </div>
 
-
     <!-- ĐÃ ĐĂNG NHẬP -->
+    <div th:if="${session.loggedInUser != null}" class="user-card">
 
-    <div
-            th:if="${session.loggedInUser != null}"
-            class="user-card">
-
-
-        <!-- USER -->
-
+        <!-- USER INFO -->
         <div class="user-info">
-
-            <img
-                    src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
-                    alt="Avatar"
-                    class="avatar"
-            >
-
+            <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Avatar" class="avatar">
             <div>
+                <span class="user-name" th:text="${session.loggedInUser.fullName}">Tên người dùng</span>
+                <span class="role" th:text="${session.loggedInUser.role}">Role</span>
 
-                <span class="fw-bold" th:text="${session.loggedInUser.fullName}">
-                    Tên người dùng
-                </span>
-
-                <span
-                        class="role"
-                        th:text="${session.loggedInUser.role}">
-
-                    Role
-
-                </span>
-
-                <span class="badge
-        data-rank-${session.userRank}"
-                      th:text="${session.userRank}"
+                <!-- Chỉ hiển thị Badge hạng user nếu không phải là ADMIN (hoặc hiện tùy ý) -->
+                <span class="badge" th:text="${session.userRank}"
                       style="padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; margin-left: 5px;"
                       th:classappend="${session.userRank == 'VIP'} ? 'bg-danger text-white' :
                           (${session.userRank == 'Bạc'} ? 'bg-secondary text-white' :
-                          (${session.userRank == 'Đồng'} ? 'bg-warning text-dark' : 'bg-info text-white'))">
-        New
-    </span>
-
+                          (${session.userRank == 'Đồng'} ? 'bg-warning text-dark' : 'bg-info text-white'))"
+                      th:if="${session.loggedInUser.role != 'ADMIN'}">
+                    New
+                </span>
             </div>
-
         </div>
 
-
         <!-- USER ACTIONS -->
-
         <div class="user-actions">
-
-
-            <!-- CART -->
-            <a href="/cart"
-               class="cart-link"
-               title="Giỏ hàng">
-
+            <!-- GIỎ HÀNG: CHỈ HIỆN KHI KHÔNG PHẢI LÀ ADMIN -->
+            <a href="/cart" class="cart-link" title="Giỏ hàng" th:if="${session.loggedInUser.role != 'ADMIN'}">
                 🛒
-
-                <!-- Số lượng sản phẩm trong giỏ -->
-                <span
-                        class="cart-badge"
-                        th:if="${session.cartCount != null && session.cartCount > 0}"
-                        th:text="${session.cartCount}">
-        0
-    </span>
-
+                <span class="cart-badge" th:if="${session.cartCount != null && session.cartCount > 0}" th:text="${session.cartCount}">0</span>
             </a>
-
-
 
             <!-- LOGOUT -->
-
-            <a
-                    href="/logout"
-                    class="logout-btn">
-
-                Đăng xuất
-
-            </a>
-
+            <a href="/logout" class="logout-btn">Đăng xuất</a>
         </div>
 
     </div>
 
 
     <!-- ==================================================
-         NAVIGATION
+         NAVIGATION (PHÂN QUYỀN HIỂN THỊ THEO ROLE)
     ================================================== -->
 
     <div class="nav-tabs">
 
+        <!-- 1. DÀNH CHO ADMIN -->
+        <th:block th:if="${session.loggedInUser != null && session.loggedInUser.role == 'ADMIN'}">
+            <a href="/" class="nav-tab active">🏠 Trang chủ</a>
+            <a href="/profile" class="nav-tab">👤 Thông tin cá nhân</a>
+            <a href="/admin/users" class="nav-tab">👥 Quản lý người dùng</a>
+            <a href="/admin/transactions" class="nav-tab">💳 Quản lý giao dịch</a>
+        </th:block>
 
-        <!-- HOME -->
-
-        <a
-                href="/"
-                class="nav-tab active">
-
-            🏠 Trang chủ
-
-        </a>
-
-
-        <!-- USER INFORMATION -->
-
-        <a
-                href="/profile"
-                class="nav-tab">
-
-            👤 Thông tin cá nhân
-
-        </a>
-
-
-        <!-- ORDERS -->
-
-        <a
-                href="/my-orders"
-                class="nav-tab">
-
-            🛍️ Đơn hàng
-
-        </a>
-
-
-        <!-- PRODUCT MANAGEMENT -->
-
-        <a
-                href="/seller/products"
-                class="nav-tab">
-
-            📦 Quản lý sản phẩm
-
-        </a>
-
+        <!-- 2. DÀNH CHO USER THƯỜNG HOẶC CHƯA ĐĂNG NHẬP -->
+        <th:block th:unless="${session.loggedInUser != null && session.loggedInUser.role == 'ADMIN'}">
+            <a href="/" class="nav-tab active">🏠 Trang chủ</a>
+            <a href="/profile" class="nav-tab">👤 Thông tin cá nhân</a>
+            <a href="/my-orders" class="nav-tab">🛍️ Đơn hàng</a>
+            <a href="/seller/products" class="nav-tab">📦 Quản lý sản phẩm</a>
+        </th:block>
 
     </div>
 
 
     <!-- ==================================================
-         PRODUCTS
+         PRODUCTS (TRANG CHỦ HIỂN THỊ TOÀN BỘ SÁCH)
     ================================================== -->
 
     <div class="product-section">
 
-
         <div class="section-header">
-
-            <h2>
-                📚 Tất cả sản phẩm
-            </h2>
-
-            <span>
-                Khám phá những cuốn sách bạn yêu thích
-            </span>
-
+            <h2>📚 Tất cả sản phẩm</h2>
+            <span>Khám phá những cuốn sách bạn yêu thích</span>
         </div>
 
-
         <!-- PRODUCT LIST -->
-
         <div class="book-list">
-
-
-            <!-- PRODUCT -->
-
-            <div
-                    class="book"
-                    th:each="book : ${books}">
-
+            <div class="book" th:each="book : ${books}">
 
                 <!-- IMAGE -->
-
                 <div class="book-image-wrapper">
-
-                    <img
-                            th:if="${book.image != null}"
-                            th:src="@{'/images/' + ${book.image}}"
-                            alt="Book Image">
-
+                    <img th:if="${book.image != null}" th:src="@{'/images/' + ${book.image}}" alt="Book Image">
                 </div>
 
-
                 <!-- TITLE -->
-
-                <h3
-                        th:text="${book.title}">
-                </h3>
-
+                <h3 th:text="${book.title}"></h3>
 
                 <!-- AUTHOR -->
-
                 <p class="book-info">
-
-                    ✍️ Tác giả:
-
-                    <span
-                            th:text="${book.author}">
-                    </span>
-
+                    ✍️ Tác giả: <span th:text="${book.author}"></span>
                 </p>
-
 
                 <!-- CATEGORY -->
-
                 <p class="book-info">
-
-                    🏷️ Thể loại:
-
-                    <span
-                            th:text="${book.category.name}">
-                    </span>
-
+                    🏷️ Thể loại: <span th:text="${book.category.name}"></span>
                 </p>
-
 
                 <!-- PRICE -->
-
-                <p
-                        class="price"
-                        th:text="${book.price} + ' VNĐ'">
-                </p>
-
+                <p class="price" th:text="${book.price} + ' VNĐ'"></p>
 
                 <!-- QUANTITY -->
-
                 <p class="quantity">
-
-                    📦 Còn lại:
-
-                    <span
-                            th:text="${book.quantity}">
-                    </span>
-
-                    cuốn
-
+                    📦 Còn lại: <span th:text="${book.quantity}"></span> cuốn
                 </p>
 
-
                 <!-- DETAIL -->
-
-                <a
-                        class="button"
-                        th:href="@{'/books/' + ${book.id}}">
-
-                    Xem chi tiết →
-
-                </a>
-
+                <a class="button" th:href="@{'/books/' + ${book.id}}">Xem chi tiết →</a>
 
             </div>
-
-
         </div>
 
     </div>
 
-
 </div>
-
 
 </body>
 
