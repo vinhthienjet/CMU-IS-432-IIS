@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý giao dịch - Admin Panel</title>
+
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+      color: #333;
+    }
+
+    header {
+      background: linear-gradient(135deg, #1e293b, #334155);
+      color: white;
+      padding: 25px 20px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    }
+    header h1 { margin: 0; font-size: 28px; }
+
+    .main-wrapper {
+      width: 95%;
+      max-width: 1300px;
+      margin: 25px auto;
+    }
+
+    /* NAVIGATION TABS */
+    .nav-tabs {
+      background: white;
+      border-radius: 12px;
+      padding: 5px;
+      display: flex;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+      margin-bottom: 25px;
+    }
+    .nav-tab {
+      flex: 1;
+      text-align: center;
+      text-decoration: none;
+      color: #64748b;
+      padding: 12px 15px;
+      border-radius: 9px;
+      font-size: 14px;
+      font-weight: bold;
+      transition: all 0.25s ease;
+    }
+    .nav-tab:hover { color: #2563eb; background: #eff6ff; }
+    .nav-tab.active { background: #2563eb; color: white; box-shadow: 0 3px 8px rgba(37, 99, 235, 0.25); }
+
+    /* CONTENT CARD */
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 14px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+    }
+
+    .action-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .search-form {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    input[type="text"] {
+      padding: 9px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      width: 300px;
+    }
+
+    .btn {
+      padding: 9px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+    .btn-primary { background: #2563eb; color: white; }
+    .btn-primary:hover { background: #1d4ed8; }
+
+    /* TABLE */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      text-align: left;
+      font-size: 14px;
+    }
+    th, td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #e2e8f0;
+      vertical-align: middle;
+    }
+    th {
+      background: #f8fafc;
+      color: #1e293b;
+      font-weight: bold;
+    }
+    tr:hover { background: #f8fafc; }
+
+    .status {
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      background: #fef9c3;
+      color: #a16207;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>💳 Trang Quản Trị Hệ Thống - Quản Lý Giao Dịch</h1>
+</header>
+
+<div class="main-wrapper">
+
+  <!-- NAVIGATION TABS -->
+  <div class="nav-tabs">
+    <a href="/" class="nav-tab">🏠 Trang chủ</a>
+    <a href="/profile" class="nav-tab">👤 Thông tin cá nhân</a>
+    <a href="/admin/users" class="nav-tab">👥 Quản lý người dùng</a>
+    <a href="/admin/transactions" class="nav-tab active">💳 Quản lý giao dịch</a>
+  </div>
+
+  <div class="card">
+    <!-- ACTION BAR: TÌM KIẾM GIAO DỊCH -->
+    <div class="action-bar">
+      <form class="search-form" method="get" action="/admin/transactions">
+        <input type="text" name="keyword" th:value="${keyword}" placeholder="🔍 Tìm theo tên người mua hoặc tên sách...">
+        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+        <a href="/admin/transactions" class="btn" style="background: #e2e8f0; color: #334155;" th:if="${keyword != null}">Làm mới</a>
+      </form>
+      <div style="color: #64748b; font-size: 14px;">
+        Tổng số giao dịch: <b th:text="${transactions.size()}">0</b>
+      </div>
+    </div>
+
+    <!-- TRANSACTIONS TABLE -->
+    <div style="overflow-x: auto;">
+      <table>
+        <thead>
+        <tr>
+          <th>Mã ĐH</th>
+          <th>Ngày đặt</th>
+          <th>Người mua</th>
+          <th>Tên sách</th>
+          <th>Số lượng</th>
+          <th>Tổng tiền</th>
+          <th>Thanh toán</th>
+          <th>Trạng thái</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${transactions == null or transactions.isEmpty()}">
+          <td colspan="8" style="text-align: center; padding: 40px; color: #64748b;">
+            Không tìm thấy giao dịch nào trong hệ thống.
+          </td>
+        </tr>
+        <tr th:each="tx : ${transactions}">
+          <td style="color: #94a3b8; font-weight: bold;" th:text="'#' + ${tx.id}">#1</td>
+          <td th:text="${tx.orderDate != null ? #temporals.format(tx.orderDate, 'dd/MM/yyyy HH:mm') : 'N/A'}">Ngày</td>
+          <td style="font-weight: bold; color: #1e293b;" th:text="${tx.buyer != null ? tx.buyer.username : 'N/A'}">User</td>
+          <td th:text="${tx.book != null ? tx.book.title : 'N/A'}" style="color: #2563eb; font-weight: bold;">Tên sách</td>
+          <td th:text="${tx.quantity}">1</td>
+          <td style="color: #dc2626; font-weight: bold;" th:text="${#numbers.formatDecimal(tx.price, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">0 VNĐ</td>
+          <td th:text="${tx.paymentMethod}">Tiền mặt</td>
+          <td>
+            <span class="status" th:text="${tx.status}">Đợi phê duyệt</span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

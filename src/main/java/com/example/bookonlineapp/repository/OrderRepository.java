@@ -32,4 +32,12 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     // 2. Tính tổng tiền đã thu (khi bán được sách thông qua quan hệ Book -> Seller)
     @Query("SELECT SUM(o.totalAmount) FROM Order o JOIN o.book b WHERE b.seller.id = :sellerId")
     BigDecimal sumTotalEarnedBySellerId(@Param("sellerId") Long sellerId);
+
+    // 1. Lấy tất cả đơn hàng sắp xếp mới nhất
+    @Query("SELECT o FROM Order o ORDER BY o.orderDate DESC")
+    List<Order> findAllByOrderByOrderDateDesc();
+
+    // 2. Tìm kiếm giao dịch (Sử dụng hàm này thay thế hoàn toàn)
+    @Query("SELECT o FROM Order o WHERE LOWER(o.buyer.username) LIKE LOWER(CONCAT('%', :keyword, '%')) OR LOWER(o.book.title) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+    List<Order> searchTransactions(@Param("keyword") String keyword);
 }
