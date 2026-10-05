@@ -2,9 +2,8 @@ package com.example.bookonlineapp.entity;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -15,36 +14,29 @@ public class Order {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "buyer_id")
+    private User buyer;
 
-    @Column(name = "order_date")
-    private LocalDateTime orderDate;
+    @ManyToOne
+    @JoinColumn(name = "book_id")
+    private Book book;
+
+    private Integer quantity;
+
+    private String paymentMethod;
+
+    private Double price; // Giá 1 cuốn tại thời điểm mua
 
     @Column(name = "total_amount", nullable = false)
-    private Double totalAmount;
+    private BigDecimal totalAmount; // Tổng tiền
 
-    @Column(nullable = false, length = 30)
+    private LocalDateTime orderDate;
+
     private String status;
 
-    @Column(name = "billing_address", length = 255)
-    private String billingAddress;
-
-    @Column(name = "shipping_address", length = 255)
-    private String shippingAddress;
-
-    @Column(name = "shipping_method", length = 50)
-    private String shippingMethod;
-
-    @OneToMany(
-            mappedBy = "order",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private List<OrderItem> orderItems = new ArrayList<>();
-
-    public Order() {
-    }
+    // =========================
+    // Getter và Setter
+    // =========================
 
     public Long getId() {
         return id;
@@ -54,12 +46,52 @@ public class Order {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public User getBuyer() {
+        return buyer;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setBuyer(User buyer) {
+        this.buyer = buyer;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public BigDecimal getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(BigDecimal totalAmount) {
+        this.totalAmount = totalAmount;
     }
 
     public LocalDateTime getOrderDate() {
@@ -70,51 +102,11 @@ public class Order {
         this.orderDate = orderDate;
     }
 
-    public Double getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(Double totalAmount) {
-        this.totalAmount = totalAmount;
-    }
-
     public String getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public String getBillingAddress() {
-        return billingAddress;
-    }
-
-    public void setBillingAddress(String billingAddress) {
-        this.billingAddress = billingAddress;
-    }
-
-    public String getShippingAddress() {
-        return shippingAddress;
-    }
-
-    public void setShippingAddress(String shippingAddress) {
-        this.shippingAddress = shippingAddress;
-    }
-
-    public String getShippingMethod() {
-        return shippingMethod;
-    }
-
-    public void setShippingMethod(String shippingMethod) {
-        this.shippingMethod = shippingMethod;
-    }
-
-    public List<OrderItem> getOrderItems() {
-        return orderItems;
-    }
-
-    public void setOrderItems(List<OrderItem> orderItems) {
-        this.orderItems = orderItems;
     }
 }

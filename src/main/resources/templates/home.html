@@ -813,6 +813,16 @@
 
                 </span>
 
+                <span class="badge
+        data-rank-${session.userRank}"
+                      th:text="${session.userRank}"
+                      style="padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; margin-left: 5px;"
+                      th:classappend="${session.userRank == 'VIP'} ? 'bg-danger text-white' :
+                          (${session.userRank == 'Bạc'} ? 'bg-secondary text-white' :
+                          (${session.userRank == 'Đồng'} ? 'bg-warning text-dark' : 'bg-info text-white'))">
+        New
+    </span>
+
             </div>
 
         </div>
@@ -889,7 +899,7 @@
         <!-- ORDERS -->
 
         <a
-                href="/orders"
+                href="/my-orders"
                 class="nav-tab">
 
             🛍️ Đơn hàng

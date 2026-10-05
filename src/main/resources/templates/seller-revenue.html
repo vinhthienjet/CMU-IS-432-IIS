@@ -1,10 +1,576 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý doanh thu</title>
+
+    <style>
+        /* =========================
+           GLOBAL
+        ========================= */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            color: #334155;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+        header {
+            background: linear-gradient(135deg, #1e293b, #334155);
+            color: white;
+            padding: 22px 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .brand {
+            color: white;
+            text-decoration: none;
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: 25px;
+        }
+
+        .brand p {
+            margin: 5px 0 0;
+            color: #cbd5e1;
+            font-size: 13px;
+        }
+
+        .seller-name {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 14px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 9px;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* =========================
+           LAYOUT
+        ========================= */
+        .page-container {
+            width: 94%;
+            max-width: 1400px;
+            margin: 30px auto 50px;
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            gap: 25px;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+        .sidebar {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            height: fit-content;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
+        }
+
+        .sidebar-title {
+            margin: 0 0 18px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #1e293b;
+            font-size: 17px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            width: 100%;
+            margin-bottom: 9px;
+            padding: 11px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 9px;
+            background: white;
+            color: #475569;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.25s ease;
+        }
+
+        .menu-item:hover {
+            background: #eff6ff;
+            color: #2563eb;
+            border-color: #bfdbfe;
+            transform: translateX(2px);
+        }
+
+        .menu-item.active {
+            background: #2563eb;
+            color: white;
+            border-color: #2563eb;
+        }
+
+        /* =========================
+           MAIN CONTENT
+        ========================= */
+        .main-content {
+            min-width: 0;
+        }
+
+        .content-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
+        }
+
+        /* =========================
+           PAGE TITLE
+        ========================= */
+        .page-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 22px;
+        }
+
+        .page-title {
+            margin: 0;
+            color: #1e293b;
+            font-size: 26px;
+        }
+
+        .page-subtitle {
+            margin: 6px 0 0;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        /* =========================
+           STATISTICS
+        ========================= */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 22px;
+        }
+
+        .stat-card {
+            padding: 18px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            background: #f8fafc;
+        }
+
+        .stat-card.books {
+            border-left: 4px solid #16a34a;
+        }
+
+        .stat-card.revenue {
+            border-left: 4px solid #2563eb;
+        }
+
+        .stat-label {
+            margin-bottom: 8px;
+            color: #64748b;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .stat-number {
+            color: #1e293b;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .stat-card.books .stat-number {
+            color: #16a34a;
+        }
+
+        .stat-card.revenue .stat-number {
+            color: #2563eb;
+        }
+
+        /* =========================
+           SECTION TITLE
+        ========================= */
+        .section-title {
+            margin: 0 0 15px;
+            color: #1e293b;
+            font-size: 18px;
+        }
+
+        /* =========================
+           EMPTY
+        ========================= */
+        .empty-message {
+            padding: 40px 20px;
+            border: 1px dashed #cbd5e1;
+            border-radius: 12px;
+            background: #f8fafc;
+            color: #64748b;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        /* =========================
+           TABLE
+        ========================= */
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+        }
+
+        table {
+            width: 100%;
+            min-width: 850px;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        thead {
+            background: #1e293b;
+            color: white;
+        }
+
+        th {
+            padding: 14px 12px;
+            text-align: left;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 14px 12px;
+            border-top: 1px solid #e2e8f0;
+            color: #475569;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+
+        tbody tr {
+            transition: background 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .transaction-id {
+            color: #2563eb;
+            font-weight: bold;
+        }
+
+        .book-name {
+            color: #1e293b;
+            font-weight: bold;
+        }
+
+        .buyer-name {
+            margin-bottom: 5px;
+            color: #1e293b;
+            font-weight: bold;
+        }
+
+        .buyer-info {
+            color: #64748b;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .price {
+            color: #dc2626;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+        @media (max-width: 900px) {
+            .page-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 20px 15px;
+            }
+
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .page-container {
+                width: 94%;
+                margin-top: 20px;
+            }
+
+            .content-card {
+                padding: 18px;
+            }
+
+            .page-title-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .sidebar {
+                padding: 15px;
+            }
+        }
+    </style>
 </head>
+
 <body>
-$END$
+
+<!-- =========================
+     HEADER
+========================= -->
+<header>
+    <div class="header-content">
+
+        <a href="/" class="brand">
+            <h1>📚 Online Book Reselling</h1>
+            <p>Quản lý doanh thu của người bán</p>
+        </a>
+
+        <div class="seller-name">
+            👤
+            <span th:text="${session.loggedInUser != null ? session.loggedInUser.fullName : 'Tên người bán'}">
+                Tên người bán
+            </span>
+        </div>
+
+    </div>
+</header>
+
+
+<!-- =========================
+     PAGE LAYOUT
+========================= -->
+<div class="page-container">
+
+    <!-- =========================
+         SIDEBAR
+    ========================= -->
+    <aside class="sidebar">
+
+        <h3 class="sidebar-title">
+            ⚙️ Menu quản lý
+        </h3>
+
+        <a class="menu-item" href="/seller/products">
+            📦 <span>Sản phẩm của bạn</span>
+        </a>
+
+        <a class="menu-item" href="/seller/orders">
+            📝 <span>Quản lý đơn hàng</span>
+        </a>
+
+        <a class="menu-item active" href="/seller/revenue">
+            💰 <span>Quản lý doanh thu</span>
+        </a>
+
+    </aside>
+
+
+    <!-- =========================
+         MAIN
+    ========================= -->
+    <main class="main-content">
+
+        <div class="content-card">
+
+            <!-- =========================
+                 TITLE
+            ========================= -->
+            <div class="page-title-row">
+
+                <div>
+                    <h2 class="page-title">
+                        💰 Quản lý doanh thu
+                    </h2>
+
+                    <p class="page-subtitle">
+                        Theo dõi doanh thu và các giao dịch bán sách
+                    </p>
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 STATISTICS
+            ========================= -->
+            <div class="stats-grid">
+
+                <div class="stat-card books">
+
+                    <div class="stat-label">
+                        📚 Tổng số sách đã bán
+                    </div>
+
+                    <div class="stat-number"
+                         th:text="${totalBooksSold} + ' cuốn'">
+                        0 cuốn
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card revenue">
+
+                    <div class="stat-label">
+                        💰 Tổng doanh thu
+                    </div>
+
+                    <div class="stat-number"
+                         th:text="${#numbers.formatDecimal(totalRevenue, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">
+                        0 VNĐ
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 TRANSACTIONS
+            ========================= -->
+            <h3 class="section-title">
+                📊 Danh sách giao dịch
+            </h3>
+
+
+            <div th:if="${transactions.isEmpty()}"
+                 class="empty-message">
+
+                📭 Bạn chưa có giao dịch bán sách nào.
+
+            </div>
+
+
+            <div class="table-wrapper"
+                 th:if="${!transactions.isEmpty()}">
+
+                <table>
+
+                    <thead>
+                    <tr>
+                        <th>Mã đơn</th>
+                        <th>Ngày giao dịch</th>
+                        <th>Sách</th>
+                        <th>Người mua</th>
+                        <th>Giá bán</th>
+                    </tr>
+                    </thead>
+
+
+                    <tbody>
+
+                    <tr th:each="order : ${transactions}">
+
+                        <td>
+                            <span class="transaction-id"
+                                  th:text="'#' + ${order.id}">
+                                #1
+                            </span>
+                        </td>
+
+
+                        <td th:text="${#temporals.format(order.orderDate, 'dd-MM-yyyy HH:mm')}">
+                            Ngày
+                        </td>
+
+
+                        <td>
+                            <span class="book-name"
+                                  th:text="${order.book.title}">
+                                Tên sách
+                            </span>
+                        </td>
+
+
+                        <td>
+
+                            <div class="buyer-name"
+                                 th:text="${order.buyer.fullName}">
+                                Tên người mua
+                            </div>
+
+                            <div class="buyer-info">
+
+                                <div th:text="'SĐT: ' + ${order.buyer.phone}">
+                                    SĐT
+                                </div>
+
+                                <div th:text="'Email: ' + ${order.buyer.email}">
+                                    Email
+                                </div>
+
+                                <div th:text="'Đ/c: ' + ${order.buyer.address}">
+                                    Địa chỉ
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <td>
+                            <span class="price"
+                                  th:text="${#numbers.formatDecimal(order.price, 0, 'COMMA', 0, 'POINT')}">
+                                100,000
+                            </span>
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
 </body>
 </html>

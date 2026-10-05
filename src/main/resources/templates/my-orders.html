@@ -1,10 +1,554 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>$Title$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Đơn hàng của tôi - Online Book</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f1f5f9;
+      color: #334155;
+    }
+
+    /* ================= HEADER ================= */
+
+    header {
+      background: linear-gradient(135deg, #1e3a8a, #2563eb);
+      color: white;
+      padding: 18px 30px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+    }
+
+    .header-content {
+      max-width: 1400px;
+      margin: auto;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      color: white;
+      text-decoration: none;
+    }
+
+    .brand h1 {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      background: rgba(255, 255, 255, 0.12);
+      padding: 9px 15px;
+      border-radius: 20px;
+
+      font-size: 14px;
+    }
+
+    /* ================= LAYOUT ================= */
+
+    .page-container {
+      width: 94%;
+      max-width: 1400px;
+
+      margin: 30px auto 50px;
+
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 25px;
+    }
+
+    /* ================= SIDEBAR ================= */
+
+    .sidebar {
+      background: white;
+      padding: 20px;
+
+      border-radius: 15px;
+
+      height: fit-content;
+
+      box-shadow: 0 5px 20px rgba(15, 23, 42, 0.07);
+    }
+
+    .sidebar-title {
+      margin-bottom: 16px;
+      padding-bottom: 13px;
+
+      border-bottom: 1px solid #e2e8f0;
+
+      color: #1e293b;
+      font-size: 15px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+
+      padding: 12px 13px;
+      margin-bottom: 9px;
+
+      border: 1px solid #e2e8f0;
+      border-radius: 9px;
+
+      color: #475569;
+      text-decoration: none;
+
+      font-size: 14px;
+      font-weight: 600;
+
+      transition: all 0.2s ease;
+    }
+
+    .menu-item:hover {
+      background: #eff6ff;
+      color: #2563eb;
+      border-color: #bfdbfe;
+      transform: translateX(2px);
+    }
+
+    .menu-item.active {
+      background: #2563eb;
+      color: white;
+      border-color: #2563eb;
+
+      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+    }
+
+    /* ================= CONTENT ================= */
+
+    .content-card {
+      background: white;
+
+      padding: 28px;
+
+      border-radius: 15px;
+
+      box-shadow: 0 5px 20px rgba(15, 23, 42, 0.07);
+    }
+
+    .page-title {
+      color: #1e293b;
+      font-size: 24px;
+      margin-bottom: 6px;
+    }
+
+    .page-description {
+      color: #64748b;
+      font-size: 14px;
+      margin-bottom: 22px;
+    }
+
+    /* ================= SUCCESS MESSAGE ================= */
+
+    .alert-success {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+
+      background: #ecfdf5;
+      color: #15803d;
+
+      padding: 12px 15px;
+
+      border: 1px solid #bbf7d0;
+      border-radius: 9px;
+
+      margin-bottom: 20px;
+
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    /* ================= TABLE ================= */
+
+    .table-wrapper {
+      width: 100%;
+
+      overflow-x: auto;
+
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+
+      margin-top: 5px;
+    }
+
+    table {
+      width: 100%;
+      min-width: 900px;
+
+      border-collapse: collapse;
+    }
+
+    thead {
+      background: #1e293b;
+      color: white;
+    }
+
+    th {
+      padding: 15px 13px;
+
+      text-align: left;
+
+      font-size: 13px;
+      font-weight: 700;
+
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 15px 13px;
+
+      border-top: 1px solid #e2e8f0;
+
+      font-size: 14px;
+
+      vertical-align: middle;
+    }
+
+    tbody tr {
+      transition: background 0.15s ease;
+    }
+
+    tbody tr:hover {
+      background: #f8fafc;
+    }
+
+    /* ================= ORDER ID ================= */
+
+    .order-id {
+      color: #64748b;
+      font-weight: 700;
+    }
+
+    /* ================= BOOK ================= */
+
+    .book-link {
+      color: #2563eb;
+
+      font-weight: 600;
+
+      text-decoration: none;
+
+      transition: 0.2s;
+    }
+
+    .book-link:hover {
+      color: #1d4ed8;
+      text-decoration: underline;
+    }
+
+    /* ================= PRICE ================= */
+
+    .price {
+      color: #dc2626;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    /* ================= STATUS ================= */
+
+    .status {
+      display: inline-block;
+
+      padding: 6px 11px;
+
+      border-radius: 20px;
+
+      font-size: 12px;
+      font-weight: 700;
+
+      white-space: nowrap;
+    }
+
+    .st-pending {
+      background: #fef3c7;
+      color: #a16207;
+    }
+
+    .st-shipping {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .st-delivered {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    /* ================= EMPTY ================= */
+
+    .empty-order {
+      text-align: center;
+
+      padding: 55px 20px !important;
+
+      color: #64748b;
+    }
+
+    .empty-icon {
+      font-size: 42px;
+      margin-bottom: 12px;
+    }
+
+    .empty-title {
+      color: #334155;
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .empty-description {
+      font-size: 14px;
+    }
+
+    /* ================= RESPONSIVE ================= */
+
+    @media (max-width: 800px) {
+
+      .page-container {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        width: 100%;
+      }
+
+      .header-content {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+      }
+
+      .content-card {
+        padding: 20px;
+      }
+
+      .page-title {
+        font-size: 21px;
+      }
+    }
+  </style>
 </head>
+
 <body>
-$END$
+
+<!-- ================= HEADER ================= -->
+
+<header>
+  <div class="header-content">
+
+    <a href="/" class="brand">
+      <h1>📚 Online Book Reselling</h1>
+    </a>
+
+    <div class="user-info">
+      👤
+      <span th:text="${session.loggedInUser != null ? session.loggedInUser.fullName : 'Tài khoản'}">
+                Tên người dùng
+            </span>
+    </div>
+
+  </div>
+</header>
+
+
+<!-- ================= MAIN ================= -->
+
+<div class="page-container">
+
+  <!-- ================= SIDEBAR ================= -->
+
+  <aside class="sidebar">
+
+    <h3 class="sidebar-title">
+      👤 Tài khoản
+    </h3>
+
+    <a class="menu-item" href="/">
+      🏠 Trang chủ
+    </a>
+
+    <a class="menu-item active" href="/my-orders">
+      🛍️ Đơn hàng của tôi
+    </a>
+
+  </aside>
+
+
+  <!-- ================= CONTENT ================= -->
+
+  <main class="content-card">
+
+    <h2 class="page-title">
+      🛍️ Đơn hàng của tôi
+    </h2>
+
+    <p class="page-description">
+      Theo dõi các cuốn sách bạn đã đặt mua qua hệ thống
+    </p>
+
+
+    <!-- Thông báo thành công -->
+
+    <div th:if="${success}" class="alert-success">
+      ✅
+      <span th:text="${success}">
+                Thao tác thành công
+            </span>
+    </div>
+
+
+    <!-- ================= ORDER TABLE ================= -->
+
+    <div class="table-wrapper">
+
+      <table>
+
+        <thead>
+
+        <tr>
+          <th>Mã ĐH</th>
+          <th>Ngày đặt</th>
+          <th>Sản phẩm</th>
+          <th>SL</th>
+          <th>Tổng tiền</th>
+          <th>Thanh toán</th>
+          <th>Trạng thái</th>
+        </tr>
+
+        </thead>
+
+
+        <tbody>
+
+        <!-- Không có đơn hàng -->
+
+        <tr th:if="${orders == null or orders.isEmpty()}">
+
+          <td colspan="7" class="empty-order">
+
+            <div class="empty-icon">
+              🛒
+            </div>
+
+            <div class="empty-title">
+              Bạn chưa có đơn hàng nào
+            </div>
+
+            <div class="empty-description">
+              Hãy khám phá và mua những cuốn sách yêu thích của bạn.
+            </div>
+
+          </td>
+
+        </tr>
+
+
+        <!-- Danh sách đơn hàng -->
+
+        <tr th:each="order : ${orders}">
+
+          <!-- Mã đơn hàng -->
+
+          <td class="order-id"
+              th:text="'#' + ${order.id}">
+            #1
+          </td>
+
+
+          <!-- Ngày đặt -->
+
+          <td th:text="${order.orderDate != null
+                        ? #temporals.format(order.orderDate, 'dd/MM/yyyy HH:mm')
+                        : 'N/A'}">
+            Ngày
+          </td>
+
+
+          <!-- Tên sách -->
+
+          <td>
+
+            <a class="book-link"
+               th:href="@{/book/{id}(id=${order.book.id})}"
+               th:text="${order.book.title}">
+              Tên sách
+            </a>
+
+          </td>
+
+
+          <!-- Số lượng -->
+
+          <td th:text="${order.quantity}">
+            1
+          </td>
+
+
+          <!-- Tổng tiền -->
+
+          <td class="price"
+              th:text="${#numbers.formatDecimal(order.price, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">
+            100,000 VNĐ
+          </td>
+
+
+          <!-- Phương thức thanh toán -->
+
+          <td th:text="${order.paymentMethod}">
+            Tiền mặt
+          </td>
+
+
+          <!-- Trạng thái -->
+
+          <td>
+
+                        <span class="status"
+
+                              th:classappend="${order.status == 'Đang giao'}
+                                  ? 'st-shipping'
+                                  : (${order.status == 'Đã giao'}
+                                      ? 'st-delivered'
+                                      : 'st-pending')"
+
+                              th:text="${order.status}">
+
+                            Đang xử lý
+
+                        </span>
+
+          </td>
+
+        </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </main>
+
+</div>
+
 </body>
 </html>

@@ -76,7 +76,7 @@ public class CartController {
         session.setAttribute("cartCount", totalItems);
 
         // Trở về lại trang chi tiết sách vừa xem
-        return "redirect:/";
+        return "redirect:/cart";
     }
 
     // 1. SỬA LẠI HÀM HIỂN THỊ GIỎ HÀNG (để luôn đếm đúng số lượng)

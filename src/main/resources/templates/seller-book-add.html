@@ -1,10 +1,567 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Đăng bán sách - Online Book</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #334155;
+        }
+
+        /* ================= HEADER ================= */
+
+        header {
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            color: white;
+            padding: 18px 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            color: white;
+            text-decoration: none;
+        }
+
+        .brand h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            background: rgba(255, 255, 255, 0.12);
+            padding: 9px 15px;
+            border-radius: 20px;
+
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* ================= PAGE ================= */
+
+        .page-container {
+            width: 94%;
+            max-width: 900px;
+
+            margin: 30px auto 50px;
+        }
+
+        /* ================= TOP ACTION ================= */
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+
+            margin-bottom: 18px;
+
+            color: #2563eb;
+            text-decoration: none;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            transition: 0.2s;
+        }
+
+        .back-link:hover {
+            color: #1d4ed8;
+            transform: translateX(-2px);
+        }
+
+        /* ================= CARD ================= */
+
+        .form-card {
+            background: white;
+
+            border-radius: 15px;
+
+            box-shadow: 0 5px 20px rgba(15, 23, 42, 0.08);
+
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+
+            color: white;
+
+            padding: 22px 28px;
+        }
+
+        .card-header h2 {
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+
+        .card-header p {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .card-body {
+            padding: 30px;
+        }
+
+        /* ================= FORM ================= */
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-row.three-columns {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #334155;
+
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .required {
+            color: #dc2626;
+        }
+
+        .form-control,
+        .form-select {
+            width: 100%;
+
+            padding: 11px 13px;
+
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+
+            background: white;
+
+            color: #334155;
+
+            font-size: 14px;
+
+            outline: none;
+
+            transition: all 0.2s ease;
+        }
+
+        .form-control::placeholder {
+            color: #94a3b8;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #2563eb;
+
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 130px;
+        }
+
+        .form-hint {
+            margin-top: 6px;
+
+            color: #94a3b8;
+
+            font-size: 12px;
+        }
+
+        /* ================= DIVIDER ================= */
+
+        .section-divider {
+            height: 1px;
+
+            background: #e2e8f0;
+
+            margin: 5px 0 25px;
+        }
+
+        /* ================= BUTTONS ================= */
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+
+            padding-top: 5px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 11px 20px;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            text-decoration: none;
+
+            cursor: pointer;
+
+            transition: all 0.2s ease;
+        }
+
+        .btn-cancel {
+            background: white;
+
+            color: #475569;
+
+            border: 1px solid #cbd5e1;
+        }
+
+        .btn-cancel:hover {
+            background: #f8fafc;
+            border-color: #94a3b8;
+        }
+
+        .btn-submit {
+            background: #2563eb;
+
+            color: white;
+
+            border: 1px solid #2563eb;
+
+            box-shadow: 0 3px 8px rgba(37, 99, 235, 0.18);
+        }
+
+        .btn-submit:hover {
+            background: #1d4ed8;
+            border-color: #1d4ed8;
+
+            transform: translateY(-1px);
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 700px) {
+
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .page-container {
+                width: 92%;
+            }
+
+            .card-body {
+                padding: 22px;
+            }
+
+            .form-row,
+            .form-row.three-columns {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
+
 <body>
-$END$
+
+<!-- ================= HEADER ================= -->
+
+<header>
+
+    <div class="header-content">
+
+        <a href="/seller/products" class="brand">
+            <h1>📚 Online Book Reselling</h1>
+        </a>
+
+        <div class="user-info">
+            👤
+            <span th:text="${session.loggedInUser.fullName}">
+                Tên người bán
+            </span>
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- ================= MAIN ================= -->
+
+<div class="page-container">
+
+    <!-- Quay lại -->
+
+    <a href="/seller/products" class="back-link">
+        ← Quay lại danh sách sách
+    </a>
+
+
+    <!-- ================= FORM CARD ================= -->
+
+    <div class="form-card">
+
+        <div class="card-header">
+
+            <h2>📖 Đăng bán sách mới</h2>
+
+            <p>
+                Điền thông tin sách bạn muốn đăng bán trên hệ thống
+            </p>
+
+        </div>
+
+
+        <div class="card-body">
+
+            <form th:action="@{/seller/book/add}" method="post">
+
+
+                <!-- ================= THÔNG TIN CƠ BẢN ================= -->
+
+                <div class="form-row">
+
+                    <!-- Tên sách -->
+
+                    <div class="form-group">
+
+                        <label class="form-label">
+                            Tên sách <span class="required">(*)</span>
+                        </label>
+
+                        <input
+                                type="text"
+                                name="title"
+                                class="form-control"
+                                placeholder="Nhập tên cuốn sách..."
+                                required
+                        />
+
+                    </div>
+
+
+                    <!-- Tác giả -->
+
+                    <div class="form-group">
+
+                        <label class="form-label">
+                            Tên tác giả <span class="required">(*)</span>
+                        </label>
+
+                        <input
+                                type="text"
+                                name="author"
+                                class="form-control"
+                                placeholder="Nhập tên tác giả..."
+                                required
+                        />
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================= GIÁ / SỐ LƯỢNG / THỂ LOẠI ================= -->
+
+                <div class="form-row three-columns">
+
+                    <!-- Giá -->
+
+                    <div class="form-group">
+
+                        <label class="form-label">
+                            Giá tiền (VNĐ) <span class="required">(*)</span>
+                        </label>
+
+                        <input
+                                type="number"
+                                name="price"
+                                class="form-control"
+                                placeholder="VD: 50000"
+                                required
+                                min="0"
+                                step="1000"
+                        />
+
+                    </div>
+
+
+                    <!-- Số lượng -->
+
+                    <div class="form-group">
+
+                        <label class="form-label">
+                            Số lượng <span class="required">(*)</span>
+                        </label>
+
+                        <input
+                                type="number"
+                                name="quantity"
+                                class="form-control"
+                                placeholder="Số lượng sách"
+                                required
+                                min="1"
+                                value="1"
+                        />
+
+                    </div>
+
+
+                    <!-- Thể loại -->
+
+                    <div class="form-group">
+
+                        <label class="form-label">
+                            Thể loại <span class="required">(*)</span>
+                        </label>
+
+                        <select
+                                name="categoryId"
+                                class="form-select"
+                                required
+                        >
+
+                            <!-- Nếu có Category từ DB:
+                            <option
+                                th:each="cat : ${categories}"
+                                th:value="${cat.id}"
+                                th:text="${cat.name}">
+                            </option>
+                            -->
+
+                            <option value="1">
+                                Lập trình (Programming)
+                            </option>
+
+                            <option value="2">
+                                Giáo khoa
+                            </option>
+
+                            <option value="3">
+                                Tiểu thuyết
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="section-divider"></div>
+
+
+                <!-- ================= ẢNH ================= -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Link ảnh bìa sách (URL)
+                    </label>
+
+                    <input
+                            type="text"
+                            name="image"
+                            class="form-control"
+                            placeholder="Dán link ảnh bìa vào đây..."
+                    />
+
+                    <div class="form-hint">
+                        Bạn có thể sử dụng link ảnh trực tiếp từ Internet.
+                    </div>
+
+                </div>
+
+
+                <!-- ================= MÔ TẢ ================= -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Mô tả chi tiết
+                    </label>
+
+                    <textarea
+                            name="description"
+                            class="form-control"
+                            rows="5"
+                            placeholder="Viết vài dòng giới thiệu về nội dung và tình trạng sách..."
+                    ></textarea>
+
+                </div>
+
+
+                <!-- ================= BUTTON ================= -->
+
+                <div class="form-actions">
+
+                    <a
+                            href="/seller/products"
+                            class="btn btn-cancel"
+                    >
+                        Hủy bỏ
+                    </a>
+
+                    <button
+                            type="submit"
+                            class="btn btn-submit"
+                    >
+                        📚 Đăng bán sách
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
 </body>
 </html>

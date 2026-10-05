@@ -1,10 +1,774 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý đơn hàng</title>
+
+    <style>
+        /* =========================
+           GLOBAL
+        ========================= */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            color: #334155;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+        header {
+            background: linear-gradient(135deg, #1e293b, #334155);
+            color: white;
+            padding: 22px 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .brand {
+            color: white;
+            text-decoration: none;
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: 25px;
+        }
+
+        .brand p {
+            margin: 5px 0 0;
+            color: #cbd5e1;
+            font-size: 13px;
+        }
+
+        .seller-name {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 14px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 9px;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* =========================
+           LAYOUT
+        ========================= */
+        .page-container {
+            width: 94%;
+            max-width: 1400px;
+            margin: 30px auto 50px;
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            gap: 25px;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+        .sidebar {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            height: fit-content;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
+        }
+
+        .sidebar-title {
+            margin: 0 0 18px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #1e293b;
+            font-size: 17px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            width: 100%;
+            margin-bottom: 9px;
+            padding: 11px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 9px;
+            background: white;
+            color: #475569;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.25s ease;
+        }
+
+        .menu-item:hover {
+            background: #eff6ff;
+            color: #2563eb;
+            border-color: #bfdbfe;
+            transform: translateX(2px);
+        }
+
+        .menu-item.active {
+            background: #2563eb;
+            color: white;
+            border-color: #2563eb;
+        }
+
+        /* =========================
+           MAIN CONTENT
+        ========================= */
+        .main-content {
+            min-width: 0;
+        }
+
+        .content-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
+        }
+
+        /* =========================
+           PAGE TITLE
+        ========================= */
+        .page-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 22px;
+        }
+
+        .page-title {
+            margin: 0;
+            color: #1e293b;
+            font-size: 26px;
+        }
+
+        .page-subtitle {
+            margin: 6px 0 0;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        /* =========================
+           ALERT
+        ========================= */
+        .alert {
+            margin-bottom: 18px;
+            padding: 12px 15px;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .alert-success {
+            background: #ecfdf5;
+            color: #047857;
+            border: 1px solid #a7f3d0;
+        }
+
+        /* =========================
+           FILTER
+        ========================= */
+        .filter-box {
+            margin-bottom: 22px;
+            padding: 18px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+        }
+
+        .filter-title {
+            margin: 0 0 15px;
+            color: #1e293b;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .filter-form {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: end;
+            gap: 15px;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 7px;
+            color: #475569;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            background: white;
+            color: #1e293b;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.25s ease;
+        }
+
+        .form-control:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+        .filter-btn {
+            padding: 10px 18px;
+            background: #475569;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .filter-btn:hover {
+            background: #334155;
+            transform: translateY(-1px);
+        }
+
+        /* =========================
+           TABLE
+        ========================= */
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+        }
+
+        table {
+            width: 100%;
+            min-width: 950px;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        thead {
+            background: #1e293b;
+            color: white;
+        }
+
+        th {
+            padding: 14px 12px;
+            text-align: left;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 14px 12px;
+            border-top: 1px solid #e2e8f0;
+            color: #475569;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+
+        tbody tr {
+            transition: background 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        /* =========================
+           ORDER INFO
+        ========================= */
+        .order-id {
+            color: #64748b;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .order-date {
+            color: #64748b;
+            white-space: nowrap;
+        }
+
+        .book-title {
+            color: #1e293b;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .price {
+            color: #dc2626;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .buyer-name {
+            color: #1e293b;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .buyer-phone {
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        /* =========================
+           STATUS
+        ========================= */
+        .status {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .status-approved {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .status-rejected {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        /* =========================
+           ACTION BUTTONS
+        ========================= */
+        .action-group {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            min-width: 120px;
+        }
+
+        .action-btn {
+            display: block;
+            width: 100%;
+            padding: 8px 11px;
+            border: none;
+            border-radius: 7px;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .approve-btn {
+            background: #16a34a;
+        }
+
+        .approve-btn:hover {
+            background: #15803d;
+            transform: translateY(-1px);
+        }
+
+        .reject-btn {
+            background: #dc2626;
+        }
+
+        .reject-btn:hover {
+            background: #b91c1c;
+            transform: translateY(-1px);
+        }
+
+        .processed-text {
+            color: #94a3b8;
+            font-size: 12px;
+            font-style: italic;
+            white-space: nowrap;
+        }
+
+        /* =========================
+           EMPTY
+        ========================= */
+        .empty-box {
+            padding: 45px 20px;
+            border: 1px dashed #cbd5e1;
+            border-radius: 12px;
+            background: #f8fafc;
+            text-align: center;
+        }
+
+        .empty-icon {
+            font-size: 42px;
+            margin-bottom: 12px;
+        }
+
+        .empty-title {
+            margin: 0 0 6px;
+            color: #334155;
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+        .empty-description {
+            margin: 0;
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+        @media (max-width: 900px) {
+            .page-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+
+            .filter-form {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 20px 15px;
+            }
+
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .page-container {
+                width: 94%;
+                margin-top: 20px;
+            }
+
+            .content-card {
+                padding: 18px;
+            }
+
+            .page-title-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .sidebar {
+                padding: 15px;
+            }
+        }
+    </style>
 </head>
+
 <body>
-$END$
+
+<!-- =========================
+     HEADER
+========================= -->
+<header>
+    <div class="header-content">
+
+        <a href="/" class="brand">
+            <h1>📚 Online Book Reselling</h1>
+            <p>Quản lý đơn hàng của người bán</p>
+        </a>
+
+        <div class="seller-name">
+            👤
+            <span th:text="${session.loggedInUser != null ? session.loggedInUser.fullName : 'Tên người bán'}">
+                Tên người bán
+            </span>
+        </div>
+
+    </div>
+</header>
+
+<!-- =========================
+     PAGE LAYOUT
+========================= -->
+<div class="page-container">
+
+    <!-- =========================
+         SIDEBAR
+    ========================= -->
+    <aside class="sidebar">
+
+        <h3 class="sidebar-title">⚙️ Menu quản lý</h3>
+
+        <a class="menu-item" href="/seller/products">
+            📦 <span>Sản phẩm của bạn</span>
+        </a>
+
+        <a class="menu-item active" href="/seller/orders">
+            📝 <span>Quản lý đơn hàng</span>
+        </a>
+
+        <a class="menu-item" href="/seller/revenue">
+            💰 <span>Quản lý doanh thu</span>
+        </a>
+
+    </aside>
+
+    <!-- =========================
+         MAIN
+    ========================= -->
+    <main class="main-content">
+
+        <div class="content-card">
+
+            <!-- =========================
+                 TITLE
+            ========================= -->
+            <div class="page-title-row">
+
+                <div>
+                    <h2 class="page-title">📝 Danh sách đơn hàng</h2>
+
+                    <p class="page-subtitle">
+                        Quản lý và xử lý các đơn hàng của khách hàng
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- =========================
+                 ALERT
+            ========================= -->
+            <div th:if="${success}"
+                 class="alert alert-success"
+                 th:text="${success}">
+                Thao tác thành công
+            </div>
+
+            <!-- =========================
+                 FILTER
+            ========================= -->
+            <div class="filter-box">
+
+                <div class="filter-title">
+                    🔎 Lọc đơn hàng
+                </div>
+
+                <form th:action="@{/seller/orders}"
+                      method="get"
+                      class="filter-form">
+
+                    <!-- STATUS -->
+                    <div class="filter-group">
+
+                        <label>Trạng thái</label>
+
+                        <select name="status" class="form-control">
+
+                            <option value="ALL"
+                                    th:selected="${currentStatus == 'ALL'}">
+                                Tất cả đơn hàng
+                            </option>
+
+                            <option value="Đợi phê duyệt"
+                                    th:selected="${currentStatus == 'Đợi phê duyệt'}">
+                                ⏳ Đợi phê duyệt
+                            </option>
+
+                            <option value="Đã lên đơn"
+                                    th:selected="${currentStatus == 'Đã lên đơn'}">
+                                ✅ Đã lên đơn
+                            </option>
+
+                            <option value="Từ chối"
+                                    th:selected="${currentStatus == 'Từ chối'}">
+                                ❌ Từ chối
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <!-- SUBMIT -->
+                    <button type="submit" class="filter-btn">
+                        🔎 Lọc đơn hàng
+                    </button>
+
+                </form>
+
+            </div>
+
+            <!-- =========================
+                 EMPTY
+            ========================= -->
+            <div th:if="${orders.isEmpty()}" class="empty-box">
+
+                <div class="empty-icon">
+                    📭
+                </div>
+
+                <p class="empty-title">
+                    Không tìm thấy đơn hàng
+                </p>
+
+                <p class="empty-description">
+                    Không có đơn hàng nào phù hợp với trạng thái đã chọn.
+                </p>
+
+            </div>
+
+            <!-- =========================
+                 TABLE
+            ========================= -->
+            <div class="table-wrapper"
+                 th:if="${!orders.isEmpty()}">
+
+                <table>
+
+                    <thead>
+
+                    <tr>
+                        <th>Mã ĐH</th>
+                        <th>Ngày đặt</th>
+                        <th>Sản phẩm</th>
+                        <th>Người mua</th>
+                        <th>Trạng thái</th>
+                        <th>Thao tác</th>
+                    </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    <tr th:each="order : ${orders}">
+
+                        <!-- ORDER ID -->
+                        <td>
+                            <span class="order-id"
+                                  th:text="'#' + ${order.id}">
+                                #1
+                            </span>
+                        </td>
+
+                        <!-- ORDER DATE -->
+                        <td>
+                            <span class="order-date"
+                                  th:text="${#temporals.format(order.orderDate, 'dd-MM-yyyy HH:mm')}">
+                                01-10-2026 10:00
+                            </span>
+                        </td>
+
+                        <!-- BOOK -->
+                        <td>
+
+                            <div class="book-title"
+                                 th:text="${order.book.title}">
+                                Tên sách
+                            </div>
+
+                            <div class="price"
+                                 th:text="${#numbers.formatDecimal(order.price, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">
+                                100,000 VNĐ
+                            </div>
+
+                        </td>
+
+                        <!-- BUYER -->
+                        <td>
+
+                            <div class="buyer-name"
+                                 th:text="${order.buyer.fullName}">
+                                Người mua
+                            </div>
+
+                            <div class="buyer-phone"
+                                 th:text="${order.buyer.phone}">
+                                SĐT
+                            </div>
+
+                        </td>
+
+                        <!-- STATUS -->
+                        <td>
+
+                            <span class="status"
+                                  th:classappend="${order.status == 'Đã lên đơn'} ? 'status-approved' : (${order.status == 'Từ chối'} ? 'status-rejected' : 'status-pending')"
+                                  th:text="${order.status != null ? order.status : 'Đợi phê duyệt'}">
+                                Đợi phê duyệt
+                            </span>
+
+                        </td>
+
+                        <!-- ACTION -->
+                        <td>
+
+                            <!-- PENDING -->
+                            <div th:if="${order.status == null or order.status == 'Đợi phê duyệt'}"
+                                 class="action-group">
+
+                                <a th:href="@{/seller/order/update-status(orderId=${order.id}, status='Đã lên đơn')}"
+                                   class="action-btn approve-btn"
+                                   onclick="return confirm('Xác nhận lên đơn cho khách hàng này?')">
+                                    ✓ Duyệt đơn
+                                </a>
+
+                                <a th:href="@{/seller/order/update-status(orderId=${order.id}, status='Từ chối')}"
+                                   class="action-btn reject-btn"
+                                   onclick="return confirm('Bạn có chắc chắn muốn từ chối đơn hàng này?')">
+                                    ✕ Từ chối
+                                </a>
+
+                            </div>
+
+                            <!-- PROCESSED -->
+                            <div th:if="${order.status == 'Đã lên đơn' or order.status == 'Từ chối'}">
+
+                                <span class="processed-text">
+                                    🔒 Đã xử lý
+                                </span>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
 </body>
 </html>

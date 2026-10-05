@@ -23,6 +23,19 @@ public class CartItem {
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    // Thêm Getter và Setter cho user
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Column(nullable = false)
     private Integer quantity;
 
