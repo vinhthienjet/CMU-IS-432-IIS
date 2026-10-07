@@ -719,7 +719,8 @@
 
                 <!-- IMAGE -->
                 <div class="book-image-wrapper">
-                    <img th:if="${book.image != null}" th:src="@{'/images/' + ${book.image}}" alt="Book Image">
+                    <img th:src="${book.image}"
+                         alt="Bìa sách">
                 </div>
 
                 <!-- TITLE -->

@@ -2,6 +2,7 @@ package com.example.bookonlineapp.repository;
 
 import com.example.bookonlineapp.entity.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -40,4 +41,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     // 2. Tìm kiếm giao dịch (Sử dụng hàm này thay thế hoàn toàn)
     @Query("SELECT o FROM Order o WHERE LOWER(o.buyer.username) LIKE LOWER(CONCAT('%', :keyword, '%')) OR LOWER(o.book.title) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     List<Order> searchTransactions(@Param("keyword") String keyword);
+
+    @Modifying
+    @Query("DELETE FROM Order o WHERE o.book.id = :bookId")
+    void deleteByBookId(@Param("bookId") Long bookId);
 }

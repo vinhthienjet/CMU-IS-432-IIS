@@ -15,18 +15,32 @@
         }
 
         body {
+            margin: 0;
+
             font-family: Arial, sans-serif;
-            background: #f1f5f9;
+
+            background: #f4f6f9;
+
             color: #334155;
         }
 
         /* ================= HEADER ================= */
 
         header {
-            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            background: linear-gradient(
+                    135deg,
+                    #1e293b,
+                    #334155
+            );
+
             color: white;
-            padding: 18px 30px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+
+            padding: 28px 20px;
+
+            text-align: center;
+
+            box-shadow:
+                    0 4px 15px rgba(0, 0, 0, 0.15);
         }
 
         .header-content {
@@ -358,7 +372,8 @@
 
         <div class="card-body">
 
-            <form th:action="@{/seller/book/add}" method="post">
+            <!-- THÊM enctype="multipart/form-data" ĐỂ TRUYỀN FILE ẢNH -->
+            <form th:action="@{/seller/book/add}" method="post" enctype="multipart/form-data">
 
 
                 <!-- ================= THÔNG TIN CƠ BẢN ================= -->
@@ -464,15 +479,6 @@
                                 class="form-select"
                                 required
                         >
-
-                            <!-- Nếu có Category từ DB:
-                            <option
-                                th:each="cat : ${categories}"
-                                th:value="${cat.id}"
-                                th:text="${cat.name}">
-                            </option>
-                            -->
-
                             <option value="1">
                                 Lập trình (Programming)
                             </option>
@@ -495,23 +501,26 @@
                 <div class="section-divider"></div>
 
 
-                <!-- ================= ẢNH ================= -->
+                <!-- ================= ẢNH (CHỌN TỪ MÁY TÍNH) ================= -->
 
                 <div class="form-group">
 
                     <label class="form-label">
-                        Link ảnh bìa sách (URL)
+                        Ảnh bìa sách (Chọn từ máy tính) <span class="required">(*)</span>
                     </label>
 
+                    <!-- THAY INPUT TEXT THÀNH INPUT FILE VÀ ĐẶT NAME LÀ imageFile -->
                     <input
-                            type="text"
-                            name="image"
+                            type="file"
+                            name="imageFile"
                             class="form-control"
-                            placeholder="Dán link ảnh bìa vào đây..."
+                            accept="image/*"
+                            required
+                            style="padding: 9px;"
                     />
 
                     <div class="form-hint">
-                        Bạn có thể sử dụng link ảnh trực tiếp từ Internet.
+                        Chọn file ảnh từ thiết bị của bạn (JPG, PNG, JPEG,...). Hệ thống sẽ tự động tải lên đám mây an toàn.
                     </div>
 
                 </div>
