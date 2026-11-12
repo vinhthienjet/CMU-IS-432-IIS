@@ -4,50 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Đơn hàng của tôi - Online Book</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: Arial, sans-serif; background: #f4f6f9; color: #334155; }
 
-    header { background: linear-gradient(135deg, #1e293b, #334155); color: white; padding: 22px 30px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); }
-    .header-content { max-width: 1400px; margin: auto; display: flex; align-items: center; justify-content: space-between; }
-    .brand { color: white; text-decoration: none; }
-    .brand h1 { margin: 0; font-size: 25px; }
-
-    .page-container { width: 94%; max-width: 1400px; margin: 30px auto 50px; display: grid; grid-template-columns: 240px 1fr; gap: 25px; }
-
-    /* SIDEBAR */
-    .sidebar { background: white; padding: 20px; border-radius: 15px; height: fit-content; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07); }
-    .sidebar-title { margin: 0 0 15px; padding-bottom: 12px; border-bottom: 1px solid #e2e8f0; color: #1e293b; font-size: 16px; text-transform: uppercase;}
-    .menu-item { display: flex; align-items: center; gap: 9px; padding: 11px 12px; margin-bottom: 9px; border: 1px solid #e2e8f0; border-radius: 9px; color: #475569; text-decoration: none; font-size: 14px; font-weight: bold; transition: 0.2s; }
-    .menu-item:hover { background: #eff6ff; color: #2563eb; transform: translateX(2px); }
-    .menu-item.active { background: #2563eb; color: white; border-color: #2563eb; }
-
-    /* CONTENT */
-    .content-card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07); }
-    .table-wrapper { width: 100%; overflow-x: auto; border: 1px solid #e2e8f0; border-radius: 12px; margin-top: 20px;}
-    table { width: 100%; min-width: 800px; border-collapse: collapse; }
-    thead { background: #1e293b; color: white; }
-    th { padding: 14px 12px; text-align: left; font-size: 13px; }
-    td { padding: 14px 12px; border-top: 1px solid #e2e8f0; font-size: 14px; vertical-align: middle; }
-
-    /* THÔNG BÁO THÀNH CÔNG */
-    .alert-success { background: #dcfce7; color: #15803d; padding: 12px 15px; border-radius: 8px; margin-bottom: 20px; font-weight: bold; font-size: 14px; }
-
-    /* TRẠNG THÁI */
-    .status { padding: 6px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; }
-    .st-pending { background: #fef9c3; color: #a16207; }
-    .st-shipping { background: #dbeafe; color: #1d4ed8; }
-    .st-delivered { background: #dcfce7; color: #15803d; }
-  </style>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/typography.css}">
+    <link rel="stylesheet" th:href="@{/css/components.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/account.css}">
+    <link rel="stylesheet" th:href="@{/css/utilities.css}">
+    <link rel="stylesheet" th:href="@{/css/design-system.css}">
 </head>
-<body>
+<body class="page--my-orders">
 
 <header>
   <div class="header-content">
     <a href="/" class="brand">
       <h1>📚 Online Book Reselling</h1>
     </a>
-    <div style="color: white; font-weight: bold;">
+    <div class="header-account">
       👤 <span th:text="${session.loggedInUser != null ? session.loggedInUser.fullName : 'Tài khoản'}">Tên người dùng</span>
     </div>
   </div>
@@ -64,8 +37,8 @@
 
   <!-- NỘI DUNG LỊCH SỬ MUA HÀNG -->
   <main class="content-card">
-    <h2 style="margin: 0 0 5px; color: #1e293b;">🛍️ Đơn hàng của tôi</h2>
-    <p style="color: #64748b; font-size: 14px;">Theo dõi các cuốn sách bạn đã đặt mua qua hệ thống</p>
+    <h2 class="orders-title">🛍️ Đơn hàng của tôi</h2>
+    <p class="text-muted-sm">Theo dõi các cuốn sách bạn đã đặt mua qua hệ thống</p>
 
     <!-- Thông báo thành công nếu có -->
     <div th:if="${success}" class="alert-success" th:text="${success}"></div>
@@ -85,22 +58,22 @@
         </thead>
         <tbody>
         <tr th:if="${orders == null or orders.isEmpty()}">
-          <td colspan="7" style="text-align: center; padding: 40px; color: #64748b;">
+          <td colspan="7" class="empty-state">
             Bạn chưa đặt mua cuốn sách nào.
           </td>
         </tr>
 
         <tr th:each="order : ${orders}">
-          <td style="color: #94a3b8; font-weight: bold;" th:text="'#' + ${order.id}">#1</td>
+          <td th:text="'#' + ${order.id}" class="text-subtle-strong">#1</td>
           <td th:text="${order.orderDate != null ? #temporals.format(order.orderDate, 'dd/MM/yyyy HH:mm') : 'N/A'}">Ngày</td>
 
           <!-- Tên sách (bấm vào xem chi tiết) -->
           <td>
-            <a th:href="@{/book/{id}(id=${order.book.id})}" style="color: #2563eb; font-weight: bold; text-decoration: none;" th:text="${order.book.title}">Tên sách</a>
+            <a th:href="@{/book/{id}(id=${order.book.id})}" th:text="${order.book.title}" class="book-link">Tên sách</a>
           </td>
 
           <td th:text="${order.quantity}">1</td>
-          <td style="color: #dc2626; font-weight: bold;" th:text="${#numbers.formatDecimal(order.price, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">100,000 VNĐ</td>
+          <td th:text="${#numbers.formatDecimal(order.price, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'" class="text-danger-strong">100,000 VNĐ</td>
           <td th:text="${order.paymentMethod}">Tiền mặt</td>
 
           <td>

@@ -1,0 +1,22 @@
+/* Shared type defaults. Individual pages only set a size when the layout needs it. */
+body,
+button,
+input,
+select,
+textarea {
+  font-family: var(--font-sans);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: inherit;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+body { font-size: 15px; }
+
+small, .text-muted-sm { font-size: 0.875rem; }
+
+@media (max-width: 600px) {
+  body { font-size: 14px; }
+}

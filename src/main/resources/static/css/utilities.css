@@ -1,0 +1,22 @@
+/* Shared state and emphasis utilities used across page groups. */
+body[class*="page--"] .table-scroll { overflow-x: auto; }
+body[class*="page--"] .empty-state { padding: 40px; color: var(--color-muted); text-align: center; }
+body[class*="page--"] .text-muted-sm { color: var(--color-muted); font-size: 14px; }
+body[class*="page--"] .text-subtle-strong { color: var(--color-subtle); font-weight: 700; }
+body[class*="page--"] .text-danger-strong { color: #dc2626; font-weight: 700; }
+body[class*="page--"] .text-primary-strong { color: var(--color-primary); font-weight: 700; }
+body[class*="page--"] .text-strong-ink { color: var(--color-ink); font-weight: 700; }
+body[class*="page--"] .text-success-strong { color: #16a34a; font-weight: 700; }
+body[class*="page--"] .text-strong { font-weight: 700; }
+body[class*="page--"] .text-danger { color: #dc2626; }
+body[class*="page--"] .text-warning { color: #b45309; }
+body[class*="page--"] .password-value { border-radius: 4px; background: #f1f5f9; padding: 2px 6px; font-family: monospace; }
+body[class*="page--"] .section-divider { margin: 15px 0; border: 0; border-top: 1px solid var(--color-border); }
+body[class*="page--"] .confirmation-box { padding: 10px; border-radius: 8px; }
+body[class*="page--"] .confirmation-box--warning { border: 1px solid #fef3c7; background: #fffbeb; }
+body[class*="page--"] .confirmation-box--danger { margin-top: 15px; border: 1px solid #fecaca; background: #fee2e2; }
+body[class*="page--"] .rank-badge { margin-left: 5px; border-radius: 4px; padding: 2px 8px; font-size: 12px; font-weight: 700; }
+body[class*="page--"] .header-account { color: #fff; font-weight: 700; }
+body[class*="page--"] .orders-title { margin: 0 0 5px; color: var(--color-ink); }
+body[class*="page--"] .btn-muted { background: #e2e8f0; color: var(--color-slate); }
+body[class*="page--"] .field-compact { padding: 9px; }

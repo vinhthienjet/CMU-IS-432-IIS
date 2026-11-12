@@ -4,7 +4,7 @@
        ========================================================= */
 
 header {
-    background: linear-gradient(135deg, #1e293b, #334155);
+    background: linear-gradient(135deg, var(--color-ink), var(--color-slate));
     color: white;
     padding: 30px 20px;
     text-align: center;

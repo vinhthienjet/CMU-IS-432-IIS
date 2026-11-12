@@ -1,0 +1,583 @@
+/* Shared redesign layer. Page styles remain scoped by the body page class. */
+body[class*="page--"] {
+  min-height: 100vh;
+  overflow-x: hidden;
+  background:
+    radial-gradient(ellipse at 8% 0%, rgba(111, 129, 255, 0.09), transparent 32rem),
+    radial-gradient(ellipse at 96% 12%, rgba(15, 159, 147, 0.055), transparent 26rem),
+    var(--color-page);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  line-height: 1.55;
+}
+
+body[class*="page--"] header {
+  padding: 18px clamp(16px, 4vw, 40px);
+  position: relative;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  background: linear-gradient(112deg, #3444c8 0%, #5969ef 56%, #7664e8 100%);
+  color: #fff;
+  text-align: left;
+  box-shadow: 0 8px 24px rgba(57, 68, 172, 0.17);
+}
+
+body[class*="page--"] header::after {
+  position: absolute;
+  right: 5%;
+  bottom: -1px;
+  left: 5%;
+  height: 3px;
+  border-radius: 3px 3px 0 0;
+  background: linear-gradient(90deg, var(--color-accent), #ffd56a 48%, var(--color-teal));
+  content: "";
+}
+
+body[class*="page--"] header h1 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(1.2rem, 2.4vw, 1.55rem);
+  font-weight: 750;
+  letter-spacing: -0.035em;
+}
+
+body[class*="page--"] header p {
+  margin: 4px 0 0;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.9rem;
+}
+
+body[class*="page--"] .container,
+body[class*="page--"] .main-wrapper,
+body[class*="page--"] .page-container {
+  width: min(100% - 32px, 1280px);
+  margin: 28px auto 48px;
+}
+
+body[class*="page--"] .page-title,
+body[class*="page--"] .page-title-row h1,
+body[class*="page--"] .page-title-row h2,
+body[class*="page--"] .profile-title,
+body[class*="page--"] .form-title,
+body[class*="page--"] .login-title h2,
+body[class*="page--"] .register-title h2 {
+  color: var(--color-ink);
+  font-size: clamp(1.35rem, 2.5vw, 1.85rem);
+  font-weight: 750;
+  line-height: 1.25;
+}
+
+body[class*="page--"] .page-subtitle,
+body[class*="page--"] .form-description,
+body[class*="page--"] .page-description,
+body[class*="page--"] .description,
+body[class*="page--"] .item-count {
+  color: var(--color-muted);
+}
+
+body[class*="page--"] .page-title::after,
+body[class*="page--"] .section-title::after {
+  display: block;
+  width: 44px;
+  height: 3px;
+  margin-top: 9px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  content: "";
+}
+
+body[class*="page--"] .card,
+body[class*="page--"] .content-card,
+body[class*="page--"] .content-card > .card,
+body[class*="page--"] .profile-card,
+body[class*="page--"] .form-card,
+body[class*="page--"] .form-container,
+body[class*="page--"] .login-container,
+body[class*="page--"] .register-container,
+body[class*="page--"] .cart-card,
+body[class*="page--"] .empty-cart,
+body[class*="page--"] .stat-card,
+body[class*="page--"] .book,
+body[class*="page--"] .product-card {
+  border: 1px solid rgba(192, 199, 235, 0.72);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+body[class*="page--"] .book,
+body[class*="page--"] .product-card,
+body[class*="page--"] .stat-card,
+body[class*="page--"] .menu-item,
+body[class*="page--"] .nav-tab,
+body[class*="page--"] button,
+body[class*="page--"] .btn,
+body[class*="page--"] .button,
+body[class*="page--"] .btn-primary,
+body[class*="page--"] .btn-back,
+body[class*="page--"] .back-btn,
+body[class*="page--"] .back-link,
+body[class*="page--"] .back-home,
+body[class*="page--"] .checkout-btn,
+body[class*="page--"] .buy-btn,
+body[class*="page--"] .add-cart-btn,
+body[class*="page--"] .filter-btn,
+body[class*="page--"] .add-btn,
+body[class*="page--"] .btn-submit,
+body[class*="page--"] .btn-save,
+body[class*="page--"] .action-btn {
+  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+body[class*="page--"] button,
+body[class*="page--"] .btn,
+body[class*="page--"] .button,
+body[class*="page--"] .login-button,
+body[class*="page--"] .register-button {
+  min-height: 42px;
+  border-radius: var(--radius-sm);
+  font-weight: 650;
+}
+
+body[class*="page--"] .btn-primary,
+body[class*="page--"] .button,
+body[class*="page--"] .checkout-btn,
+body[class*="page--"] .buy-btn,
+body[class*="page--"] .add-cart-btn,
+body[class*="page--"] .filter-btn,
+body[class*="page--"] .add-btn,
+body[class*="page--"] .btn-submit,
+body[class*="page--"] .btn-save,
+body[class*="page--"] .login-button,
+body[class*="page--"] .register-button,
+body[class*="page--"] .confirm-btn {
+  border: 1px solid var(--color-primary);
+  background: var(--color-primary);
+  color: #fff;
+}
+
+body[class*="page--"] .btn-primary:hover,
+body[class*="page--"] .button:hover,
+body[class*="page--"] .checkout-btn:hover,
+body[class*="page--"] .buy-btn:hover,
+body[class*="page--"] .add-cart-btn:hover,
+body[class*="page--"] .filter-btn:hover,
+body[class*="page--"] .add-btn:hover,
+body[class*="page--"] .btn-submit:hover,
+body[class*="page--"] .btn-save:hover,
+body[class*="page--"] .login-button:hover,
+body[class*="page--"] .register-button:hover,
+body[class*="page--"] .confirm-btn:hover {
+  border-color: var(--color-primary-hover);
+  background: var(--color-primary-hover);
+  color: #fff;
+}
+
+body[class*="page--"] .btn-secondary,
+body[class*="page--"] .btn-cancel,
+body[class*="page--"] .cancel-btn,
+body[class*="page--"] .continue-shopping,
+body[class*="page--"] .btn-back {
+  border: 1px solid var(--color-border);
+  background: #fff;
+  color: var(--color-slate);
+}
+
+body[class*="page--"] .btn-secondary:hover,
+body[class*="page--"] .btn-cancel:hover,
+body[class*="page--"] .cancel-btn:hover,
+body[class*="page--"] .continue-shopping:hover,
+body[class*="page--"] .btn-back:hover {
+  border-color: #b8c6e8;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+body[class*="page--"] .btn-danger,
+body[class*="page--"] .delete-btn,
+body[class*="page--"] .reject-btn,
+body[class*="page--"] .remove-btn,
+body[class*="page--"] .action-btn-delete {
+  border: 1px solid #f0c5c5;
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+}
+
+body[class*="page--"] .btn-danger:hover,
+body[class*="page--"] .delete-btn:hover,
+body[class*="page--"] .reject-btn:hover,
+body[class*="page--"] .remove-btn:hover,
+body[class*="page--"] .action-btn-delete:hover {
+  border-color: var(--color-danger);
+  background: var(--color-danger);
+  color: #fff;
+}
+
+body[class*="page--"] button:active,
+body[class*="page--"] .btn:active,
+body[class*="page--"] a.button:active {
+  transform: translateY(1px);
+}
+
+body[class*="page--"] button:focus-visible,
+body[class*="page--"] a:focus-visible,
+body[class*="page--"] input:focus-visible,
+body[class*="page--"] select:focus-visible,
+body[class*="page--"] textarea:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+body[class*="page--"] button:disabled,
+body[class*="page--"] .btn:disabled,
+body[class*="page--"] [aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+body[class*="page--"] input:not([type="checkbox"]):not([type="radio"]),
+body[class*="page--"] select,
+body[class*="page--"] textarea {
+  min-height: 42px;
+  border: 1px solid #cbd5e1;
+  border-radius: var(--radius-sm);
+  background: #fff;
+  color: var(--color-ink);
+}
+
+body[class*="page--"] input:focus,
+body[class*="page--"] select:focus,
+body[class*="page--"] textarea:focus {
+  border-color: var(--color-primary);
+  box-shadow: var(--focus-ring);
+}
+
+body[class*="page--"] label,
+body[class*="page--"] .form-label,
+body[class*="page--"] .form-group label {
+  color: var(--color-slate);
+  font-size: 0.9rem;
+  font-weight: 650;
+}
+
+body[class*="page--"] .table-wrapper,
+body[class*="page--"] .table-scroll,
+body[class*="page--"] .cart-card,
+body[class*="page--"] .table-responsive {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+body[class*="page--"] table {
+  border-collapse: collapse;
+  color: var(--color-slate);
+}
+
+body[class*="page--"] table thead th {
+  background: #f8faff;
+  color: #52617a;
+  font-size: 0.76rem;
+  font-weight: 750;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+}
+
+body[class*="page--"] table th,
+body[class*="page--"] table td {
+  border-bottom: 1px solid #e9edf4;
+  padding: 13px 15px;
+}
+
+body[class*="page--"] table tbody tr:hover {
+  background: #f8faff;
+}
+
+body[class*="page--"] .nav-tabs,
+body[class*="page--"] .navbar {
+  gap: 6px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: 0 3px 12px rgba(23, 35, 59, 0.04);
+}
+
+body[class*="page--"] .nav-tab,
+body[class*="page--"] .nav-link,
+body[class*="page--"] .menu-item {
+  border-radius: var(--radius-sm);
+  color: #52617a;
+  font-weight: 650;
+}
+
+body[class*="page--"] .nav-tab.active,
+body[class*="page--"] .nav-link.active,
+body[class*="page--"] .menu-item.active {
+  background: linear-gradient(135deg, var(--color-primary), #7664e8);
+  color: #fff;
+  box-shadow: 0 5px 14px rgba(67, 87, 232, 0.24);
+}
+
+body[class*="page--"] .nav-tab:hover,
+body[class*="page--"] .nav-link:hover,
+body[class*="page--"] .menu-item:hover {
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  transform: none;
+}
+
+body[class*="page--"] .sidebar {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+body[class*="page--"] .book,
+body[class*="page--"] .product-card {
+  overflow: hidden;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+body[class*="page--"] .book:hover,
+body[class*="page--"] .product-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-float);
+}
+
+body[class*="page--"] .stat-card {
+  border-top: 3px solid #7664e8;
+  background: linear-gradient(145deg, #fff 72%, #f2f2ff);
+}
+
+body[class*="page--"] .stat-card:nth-child(3n + 2) {
+  border-top-color: var(--color-teal);
+  background: linear-gradient(145deg, #fff 72%, #effbf8);
+}
+
+body[class*="page--"] .stat-card:nth-child(3n) {
+  border-top-color: var(--color-accent);
+  background: linear-gradient(145deg, #fff 72%, #fff9ec);
+}
+
+body[class*="page--"] .book,
+body[class*="page--"] .product-card {
+  border-color: #e5e7f5;
+}
+
+body[class*="page--"] .book img,
+body[class*="page--"] .book-image,
+body[class*="page--"] .product-image {
+  border-radius: var(--radius-md);
+  object-fit: cover;
+}
+
+body[class*="page--"] .book-title,
+body[class*="page--"] .product-title,
+body[class*="page--"] .book h3 {
+  color: var(--color-ink);
+  font-weight: 700;
+}
+
+body[class*="page--"] a:not(.btn):not(.button):not(.nav-tab):not(.nav-link):not(.menu-item):not(.back-btn):not(.back-link):not(.back-home):not(.btn-back) {
+  text-underline-offset: 3px;
+}
+
+body[class*="page--"] a:not(.btn):not(.button):not(.nav-tab):not(.nav-link):not(.menu-item):not(.back-btn):not(.back-link):not(.back-home):not(.btn-back):hover {
+  color: var(--color-primary);
+}
+
+body[class*="page--"] .price,
+body[class*="page--"] .total-price,
+body[class*="page--"] .revenue {
+  color: var(--color-primary);
+  font-weight: 750;
+}
+
+body[class*="page--"] .cart-count,
+body[class*="page--"] .cart-badge {
+  background: var(--color-accent);
+  color: #382200;
+}
+
+body[class*="page--"] .status,
+body[class*="page--"] .badge,
+body[class*="page--"] .role,
+body[class*="page--"] .cart-count {
+  border-radius: var(--radius-pill);
+  font-weight: 700;
+}
+
+body[class*="page--"] .alert-success,
+body[class*="page--"] .success,
+body[class*="page--"] .status-available,
+body[class*="page--"] .status-success {
+  border-color: #bfe8d2;
+  background: var(--color-success-soft);
+  color: var(--color-success);
+}
+
+body[class*="page--"] .alert-error,
+body[class*="page--"] .error,
+body[class*="page--"] .alert-danger,
+body[class*="page--"] .status-rejected,
+body[class*="page--"] .status-danger {
+  border-color: #f2c8c8;
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+}
+
+body[class*="page--"] .status-pending,
+body[class*="page--"] .status-warning {
+  border-color: #f0ddb5;
+  background: var(--color-warning-soft);
+  color: var(--color-warning);
+}
+
+body[class*="page--"] .back-btn,
+body[class*="page--"] .back-link,
+body[class*="page--"] .back-home,
+body[class*="page--"] .btn-back {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 18px;
+  padding: 9px 13px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-slate);
+  font-weight: 650;
+  text-decoration: none;
+}
+
+body[class*="page--"] .back-btn:hover,
+body[class*="page--"] .back-link:hover,
+body[class*="page--"] .back-home:hover,
+body[class*="page--"] .btn-back:hover {
+  border-color: #b8c6e8;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+body[class*="page--"] .empty-cart,
+body[class*="page--"] .empty-box,
+body[class*="page--"] .empty-message {
+  padding: clamp(28px, 5vw, 56px);
+  text-align: center;
+}
+
+body[class*="page--"] .modal-overlay,
+body[class*="page--"] .checkout-modal {
+  z-index: 1050;
+  padding: 20px;
+  background: rgba(15, 23, 42, 0.58);
+  backdrop-filter: blur(3px);
+}
+
+body[class*="page--"] .modal-box,
+body[class*="page--"] .modal-content,
+body[class*="page--"] .checkout-modal__dialog {
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-float);
+}
+
+body[class*="page--"] .form-actions,
+body[class*="page--"] .modal-actions,
+body[class*="page--"] .modal-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+@media (max-width: 900px) {
+  body[class*="page--book-detail"] .book-detail {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+
+  body[class*="page--book-detail"] .image-wrapper {
+    width: min(100%, 380px);
+    min-width: 0;
+    margin-inline: auto;
+  }
+
+  body[class*="page--book-detail"] .info {
+    width: 100%;
+    min-width: 0;
+  }
+
+  body[class*="page--"] .page-container {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  body[class*="page--"] .sidebar {
+    width: 100%;
+  }
+
+  body[class*="page--"] .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  body[class*="page--"] .container,
+  body[class*="page--"] .main-wrapper,
+  body[class*="page--"] .page-container {
+    width: min(100% - 24px, 1280px);
+    margin: 18px auto 32px;
+  }
+
+  body[class*="page--"] header {
+    padding: 15px 16px;
+  }
+
+  body[class*="page--"] .nav-tabs,
+  body[class*="page--"] .navbar {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+
+  body[class*="page--"] .nav-tab,
+  body[class*="page--"] .nav-link {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  body[class*="page--"] .stats-grid,
+  body[class*="page--"] .book-list,
+  body[class*="page--"] .form-row,
+  body[class*="page--"] .three-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  body[class*="page--"] .content-card,
+  body[class*="page--"] .form-card,
+  body[class*="page--"] .profile-card,
+  body[class*="page--"] .container,
+  body[class*="page--"] .login-container,
+  body[class*="page--"] .register-container {
+    padding: 20px 16px;
+  }
+
+  body[class*="page--"] table {
+    min-width: 640px;
+  }
+
+  body[class*="page--"] button,
+  body[class*="page--"] .btn,
+  body[class*="page--"] .checkout-btn,
+  body[class*="page--"] .buy-btn,
+  body[class*="page--"] .add-cart-btn,
+  body[class*="page--"] .filter-btn {
+    min-height: 44px;
+  }
+
+  body[class*="page--"] .form-actions,
+  body[class*="page--"] .modal-actions,
+  body[class*="page--"] .modal-footer {
+    flex-direction: column-reverse;
+  }
+}

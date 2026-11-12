@@ -6,355 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Giỏ hàng của bạn</title>
 
-    <style>
-        /* =========================
-           GLOBAL
-        ========================= */
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f6f9;
-            color: #334155;
-        }
-
-        /* =========================
-           HEADER
-        ========================= */
-        header {
-            background: linear-gradient(135deg, #1e293b, #334155);
-            color: white;
-            padding: 28px 20px;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: 30px;
-        }
-
-        header p {
-            margin: 8px 0 0;
-            color: #cbd5e1;
-            font-size: 14px;
-        }
-
-        /* =========================
-           NAVBAR
-        ========================= */
-        .navbar {
-            width: 90%;
-            max-width: 1200px;
-            margin: 20px auto 0;
-            background: white;
-            padding: 6px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-        }
-
-        .nav-link {
-            text-decoration: none;
-            color: #64748b;
-            padding: 11px 18px;
-            border-radius: 9px;
-            font-size: 14px;
-            font-weight: bold;
-            transition: all 0.25s ease;
-        }
-
-        .nav-link:hover {
-            color: #2563eb;
-            background: #eff6ff;
-        }
-
-        .nav-link.active {
-            background: #2563eb;
-            color: white;
-        }
-
-        .cart-count {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 19px;
-            height: 19px;
-            padding: 0 5px;
-            margin-left: 4px;
-            background: #ef4444;
-            color: white;
-            border-radius: 50px;
-            font-size: 11px;
-            font-weight: bold;
-        }
-
-        /* =========================
-           MAIN CONTAINER
-        ========================= */
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 30px auto 50px;
-        }
-
-        .page-title {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .page-title h2 {
-            margin: 0;
-            color: #1e293b;
-            font-size: 26px;
-        }
-
-        .item-count {
-            color: #64748b;
-            font-size: 14px;
-        }
-
-        /* =========================
-           EMPTY CART
-        ========================= */
-        .empty-cart {
-            background: white;
-            padding: 60px 30px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
-        }
-
-        .empty-icon {
-            font-size: 60px;
-            margin-bottom: 15px;
-        }
-
-        .empty-cart h3 {
-            margin: 0 0 10px;
-            color: #1e293b;
-        }
-
-        .empty-cart p {
-            margin-bottom: 25px;
-            color: #64748b;
-        }
-
-        .btn-primary {
-            display: inline-block;
-            padding: 11px 20px;
-            background: #2563eb;
-            color: white;
-            text-decoration: none;
-            border-radius: 9px;
-            font-size: 14px;
-            font-weight: bold;
-            transition: all 0.25s ease;
-        }
-
-        .btn-primary:hover {
-            background: #1d4ed8;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 14px rgba(37, 99, 235, 0.25);
-        }
-
-        /* =========================
-           CART CARD & TABLE
-        ========================= */
-        .cart-card {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
-        }
-
-        .cart-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .cart-table thead {
-            background: #f8fafc;
-        }
-
-        .cart-table th {
-            padding: 16px;
-            text-align: left;
-            color: #475569;
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .cart-table td {
-            padding: 18px 16px;
-            border-bottom: 1px solid #f1f5f9;
-            vertical-align: middle;
-            font-size: 14px;
-        }
-
-        .cart-table tbody tr:hover {
-            background: #f8fafc;
-        }
-
-        .book-link {
-            color: #2563eb;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .book-link:hover {
-            text-decoration: underline;
-        }
-
-        .price {
-            font-weight: bold;
-            color: #334155;
-        }
-
-        .total-item {
-            color: #e53935;
-            font-weight: bold;
-        }
-
-        /* =========================
-           QUANTITY
-        ========================= */
-        .quantity-control {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .quantity-btn {
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            background: #f1f5f9;
-            color: #334155;
-            border: 1px solid #cbd5e1;
-            border-radius: 7px;
-            font-size: 18px;
-            font-weight: bold;
-            transition: all 0.2s ease;
-        }
-
-        .quantity-btn:hover {
-            background: #2563eb;
-            color: white;
-            border-color: #2563eb;
-        }
-
-        .quantity-number {
-            min-width: 30px;
-            text-align: center;
-            font-weight: bold;
-            color: #1e293b;
-        }
-
-        .remove-btn {
-            display: inline-block;
-            padding: 7px 12px;
-            background: #fef2f2;
-            color: #dc2626;
-            border: 1px solid #fecaca;
-            border-radius: 7px;
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: bold;
-            transition: all 0.2s ease;
-        }
-
-        .remove-btn:hover {
-            background: #dc2626;
-            color: white;
-        }
-
-        /* =========================
-           CART FOOTER
-        ========================= */
-        .cart-footer {
-            padding: 22px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-            background: #f8fafc;
-            border-top: 1px solid #e2e8f0;
-        }
-
-        .continue-shopping {
-            color: #2563eb;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        .continue-shopping:hover {
-            text-decoration: underline;
-        }
-
-        .checkout-area {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .total-label {
-            color: #64748b;
-            font-size: 14px;
-        }
-
-        .total-price {
-            color: #e53935;
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .checkout-btn {
-            padding: 12px 22px;
-            background: #16a34a;
-            color: white;
-            border: none;
-            border-radius: 9px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.25s ease;
-        }
-
-        .checkout-btn:hover {
-            background: #15803d;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 14px rgba(22, 163, 74, 0.25);
-        }
-
-        /* =========================
-           RESPONSIVE
-        ========================= */
-        @media (max-width: 800px) {
-            .container { width: 95%; }
-            .cart-table { min-width: 700px; }
-            .cart-card { overflow-x: auto; }
-            .cart-footer { flex-direction: column; align-items: stretch; }
-            .checkout-area { justify-content: space-between; }
-        }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/typography.css}">
+    <link rel="stylesheet" th:href="@{/css/components.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/storefront.css}">
+    <link rel="stylesheet" th:href="@{/css/utilities.css}">
+    <link rel="stylesheet" th:href="@{/css/checkout-modal.css}">
+    <link rel="stylesheet" th:href="@{/css/design-system.css}">
 </head>
 
-<body>
+<body class="page--cart">
 
 <!-- =========================
      HEADER
@@ -448,30 +110,30 @@
                 <!-- ==========================================
                      POPUP CHỌN PHƯƠNG THỨC THANH TOÁN
                 =========================================== -->
-                <div id="checkoutModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 1050;">
-                    <div style="background: white; padding: 30px; border-radius: 12px; width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
-                        <h4 style="margin-top: 0; color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">
+                <div id="checkoutModal" class="checkout-modal" role="dialog" aria-modal="true" aria-labelledby="checkoutModalTitle">
+                    <div class="checkout-modal__dialog">
+                        <h4 id="checkoutModalTitle" class="checkout-modal__title">
                             Phương thức thanh toán
                         </h4>
 
-                        <form id="checkoutForm" th:action="@{/checkout}" method="post" style="margin-top: 20px;">
-                            <label style="display: block; padding: 15px; border: 1px solid #cbd5e1; border-radius: 8px; margin-bottom: 15px; cursor: pointer;">
-                                <input type="radio" name="paymentMethod" value="Tiền mặt" id="payCash" checked style="margin-right: 10px;">
-                                <strong style="font-size: 16px; color: #15803d;">💵 Tiền mặt</strong>
-                                <div style="font-size: 13px; color: #64748b; margin-left: 25px; margin-top: 5px;">Thanh toán khi nhận hàng (COD)</div>
+                        <form id="checkoutForm" th:action="@{/checkout}" method="post" class="checkout-modal__form">
+                            <label class="payment-option">
+                                <input type="radio" name="paymentMethod" value="Tiền mặt" id="payCash" checked>
+                                <strong class="payment-option__cash">💵 Tiền mặt</strong>
+                                <span class="payment-option__description">Thanh toán khi nhận hàng (COD)</span>
                             </label>
 
-                            <label style="display: block; padding: 15px; border: 1px solid #cbd5e1; border-radius: 8px; margin-bottom: 25px; cursor: pointer;">
-                                <input type="radio" name="paymentMethod" value="Chuyển khoản" id="payBank" style="margin-right: 10px;">
-                                <strong style="font-size: 16px; color: #2563eb;">🏦 Chuyển khoản</strong>
-                                <div style="font-size: 13px; color: #64748b; margin-left: 25px; margin-top: 5px;">Thanh toán qua thẻ ATM / Ví điện tử</div>
+                            <label class="payment-option payment-option--last">
+                                <input type="radio" name="paymentMethod" value="Chuyển khoản" id="payBank">
+                                <strong class="payment-option__bank">🏦 Chuyển khoản</strong>
+                                <span class="payment-option__description">Thanh toán qua thẻ ATM / Ví điện tử</span>
                             </label>
 
-                            <div style="display: flex; gap: 10px;">
-                                <button type="button" onclick="closeCheckoutModal()" style="flex: 1; padding: 10px; border: 1px solid #cbd5e1; background: white; border-radius: 8px; cursor: pointer; font-weight: bold;">
+                            <div class="checkout-modal__actions">
+                                <button type="button" class="checkout-modal__button checkout-modal__button--cancel" onclick="closeCheckoutModal()">
                                     Hủy bỏ
                                 </button>
-                                <button type="button" onclick="processPayment()" style="flex: 1; padding: 10px; border: none; background: #2563eb; color: white; border-radius: 8px; cursor: pointer; font-weight: bold;">
+                                <button type="button" class="checkout-modal__button checkout-modal__button--confirm" onclick="processPayment()">
                                     Xác nhận đặt hàng
                                 </button>
                             </div>

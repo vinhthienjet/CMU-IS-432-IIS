@@ -1,10 +1,10 @@
- /* =========================================================
-       ADMIN NAVIGATION
-       Dùng cho khu vực quản trị Admin
+/* =========================================================
+       USER NAVIGATION
+       Dùng cho khu vực người dùng đăng nhập
        ========================================================= */
 
     /* =========================
-       ADMIN CARD
+       USER CARD
        ========================= */
 
 .user-card {
@@ -25,7 +25,7 @@
 }
 
 /* =========================
-   ADMIN INFO
+   USER INFO
    ========================= */
 
 .user-info {
@@ -44,7 +44,7 @@
     align-items: center;
     justify-content: center;
 
-    background: #7c3aed;
+    background: var(--color-primary);
     color: white;
 
     font-size: 22px;
@@ -54,19 +54,18 @@
 .user-name {
     font-size: 17px;
     font-weight: 600;
-    color: #1e293b;
+    color: var(--color-ink);
 }
 
 .role {
     margin-top: 3px;
 
     font-size: 13px;
-    color: #7c3aed;
-    font-weight: 500;
+    color: var(--color-muted);
 }
 
 /* =========================
-   ADMIN ACTIONS
+   USER ACTIONS
    ========================= */
 
 .user-actions {
@@ -77,7 +76,6 @@
 
 /* =========================
    CART
-   Admin không sử dụng giỏ hàng
    ========================= */
 
 .cart-link {
@@ -89,7 +87,7 @@
 
     padding: 10px 14px;
 
-    color: #1e293b;
+    color: var(--color-ink);
     text-decoration: none;
 
     border-radius: 8px;
@@ -98,8 +96,8 @@
 }
 
 .cart-link:hover {
-    background: #f5f3ff;
-    color: #7c3aed;
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
 }
 
 .cart-badge {
@@ -143,7 +141,6 @@
     border-radius: 7px;
 
     text-decoration: none;
-
     font-size: 14px;
     font-weight: 500;
 
@@ -155,7 +152,7 @@
 }
 
 /* =========================
-   ADMIN NAVIGATION
+   USER NAVIGATION
    ========================= */
 
 .nav-tabs {
@@ -198,17 +195,17 @@
 }
 
 .nav-tab:hover {
-    background: #f5f3ff;
-    color: #7c3aed;
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
 }
 
 .nav-tab.active {
-    background: #7c3aed;
+    background: var(--color-primary);
     color: white;
 }
 
 .nav-tab.active:hover {
-    background: #6d28d9;
+    background: var(--color-primary-hover);
     color: white;
 }
 
@@ -249,7 +246,7 @@
 
     padding: 9px 18px;
 
-    background: #7c3aed;
+    background: var(--color-primary);
     color: white;
 
     border-radius: 7px;
@@ -263,7 +260,7 @@
 }
 
 .login-btn:hover {
-    background: #6d28d9;
+    background: var(--color-primary-hover);
 }
 
 /* =========================
@@ -320,5 +317,9 @@
 
     .logout-btn {
         flex: 1;
+    }
+
+    .cart-link {
+        padding: 9px 12px;
     }
 }
